@@ -229,7 +229,7 @@ if section == "Visualizacion":
         g3 = alt.Chart(sonido).transform_fold(['danceability','energy','speechiness','acousticness','instrumentalness','liveness','valence'], as_=['key', 'value']).mark_boxplot(
         ).encode(x='Ano:N',
                  y='value:Q',
-                 column = 'key:N'
+                 row = 'key:N'
                 )
     
     st.altair_chart(g3, use_container_width=True)
