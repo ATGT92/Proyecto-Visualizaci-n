@@ -18,10 +18,7 @@ st.title("Rankings de Artistas y Canciones en Spotify")
 with st.sidebar:
     st.button("Introducción")
     
-st.write('El objetivo principal de este proyecto es entender - por medio de visualizaciones - el comportamiento de los ranking de canciones \\
-          más populares en EEUU en la plataforma Spotify, entre los años 2017 y 2021. Específicamente se desea mostrar cuales son los artistas,\\
-          canciones y géneros musicales más populares y la relación de estas preferencias con algunas características sonoras por canción que disponibiliza\\
-          la aplicación a través de su API.')
+st.write('El objetivo principal ')
     
 def get_user_name():
     return 'John'
