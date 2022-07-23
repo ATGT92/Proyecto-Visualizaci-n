@@ -32,6 +32,9 @@ def DateTransformation(data):
 # Datos charts o ranking de canciones
 df_chart = pd.read_csv('/content/gdrive/MyDrive/Proyecto_Data_Science/4_Datos/charts.csv')
 
+# Datos artistas
+df_artist = pd.read_csv("/content/gdrive/MyDrive/Proyecto_Data_Science/4_Datos/artists.csv")
+
 # Datos canciones
 df_song = pd.read_csv('/content/gdrive/MyDrive/Proyecto_Data_Science/4_Datos/tracks.csv')
 
