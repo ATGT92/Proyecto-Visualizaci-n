@@ -171,6 +171,7 @@ if section == "Datos":
 
     st.write('Renombramos algunas columnas')
     with st.echo():
+        @st.cache()
         country_final = country_final.rename(columns = {'Song_x':'Song','Artist_x':'Artist'})
         st.write(country_final.shape)
         st.write(country_final.head(10))
