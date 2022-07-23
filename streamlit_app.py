@@ -18,6 +18,9 @@ st.title("Rankings de Artistas y Canciones en Spotify")
 with st.sidebar:
     st.button("Introducción")
     
+def get_user_name():
+    return 'John'
+    
 with st.echo():
     # Everything inside this block will be both printed to the screen
     # and executed.
