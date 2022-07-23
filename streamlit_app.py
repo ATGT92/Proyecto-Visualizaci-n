@@ -221,7 +221,7 @@ if section == "Visualizacion":
     
     st.subheader('Propiedades Sonoras en el tiempo')
     st.write('En esta sección se observa como varían las propiedades sonoras de las canciones más escuchadas en EEUU en el tiempo. Para esto se estudia \
-    **danceability**, **energy**, **speechiness**, **acousticness**, **instrumentalness**, **liveness** y **valence**.)
+    danceability, energy, speechiness, acousticness, instrumentalness, liveness y valence.)
 
     with st.echo():
         sonido = st.session_state.df[['Ano','Position','danceability','energy','loudness','speechiness','acousticness','instrumentalness','liveness','valence']].groupby(['Ano','Position'], as_index=False).mean()
