@@ -54,9 +54,9 @@ with st.echo():
     df_song = pd.read_csv('tracks.csv')
     st.write(df_song.head(5))
     
-st.subheader('Transformación de Data')
+st.subheader('Transformación de Data Chart')
     
-st.write('A continuación se describen las transformaciones de datos realizadas para llegar al dataset final con el cual se trabajarán las visualizaciones')
+st.write('A continuación se describen las transformaciones de datos realizadas para al dataset **chart** llegar al dataset final con el cual se trabajarán las visualizaciones:')
 
 st.write('Se extraen únicamente los ranking de canciones de EEUU para trabajar acotadamente.')    
 with st.echo():
@@ -98,60 +98,77 @@ with st.echo():
     chart = chart.dropna()
 
     
+st.subheader('Transformación de Data Artists')
     
+st.write('A continuación se describen las transformaciones de datos realizadas para al dataset **artist** llegar al dataset final con el cual se trabajarán las visualizaciones:')
     
-# Ajustamos los nombres de alguna columnas
-artist = df_artist.rename(columns = {'id':'Artist_id','name':'Artist'})
+st.write('Se ajusta el nombre de algunas columnas')
+with st.echo():
+    artist = df_artist.rename(columns = {'id':'Artist_id','name':'Artist'})
 
-# Generación de los géneros: 1 a 6
-for i in range(1,7):
-  genero = 'Genre'+str(i)
-  artist[genero] = artist['genres'].str.replace("'",'').str.replace('[','').str.replace(']','').str.replace(', ',',').str.lstrip().str.rstrip().str.split(',').apply(lambda x: x[i-1] if len(x) >= i else np.nan)
+st.write('Se genera una columna por cada uno de los posibles 6 géneros a los que puede estar ligado un artista')
+with st.echo():
+    for i in range(1,7):
+        genero = 'Genre'+str(i)
+        artist[genero] = artist['genres'].str.replace("'",'').str.replace('[','').str.replace(']','').str.replace(', ',',').str.lstrip().str.rstrip().str.split(',').apply(lambda x: x[i-1] if len(x) >= i else np.nan)
 
-# En caso que la lista sea "[" + "''" + "]" ( o [''] como lista) el primer y único elemento siempre será ''. Debemos dejarlo como nan
-artist.loc[artist['Genre1'] == "",'Genre1'] = np.nan
+st.write('En caso que la lista sea "[" + "''" + "]" ( o [''] como lista) el primer y único elemento siempre será ''. Debemos dejarlo como nan')
+with st.echo():
+    artist.loc[artist['Genre1'] == "",'Genre1'] = np.nan
 
-# Extraemos columnas de interés
-artist = artist[['Artist_id','Artist','Genre1','Genre2','Genre3','Genre4','Genre5','Genre6']]
+st.write('Se extraen las columnas de interés')
+with st.echo():
+    artist = artist[['Artist_id','Artist','Genre1','Genre2','Genre3','Genre4','Genre5','Genre6']]
 
-# Eliminamos posibles filas duplicadas
-artist = artist.drop_duplicates()
+st.write('Se eliminan posibles filas duplicadas')
+with st.echo():
+    artist = artist.drop_duplicates()
+    
+st.subheader('Transformación de Data Songs')
 
-# Atributos de las canciones
-columns_sound = ['danceability','energy','loudness','speechiness','acousticness','instrumentalness','liveness','valence','tempo','mode','key']
+st.write('Se mapean las columnas de este dataframe que hacen mención a las características sonoras de las canciones, las cuales calcula Spotify en base a una\
+         métrica que va en el rango [0,1]')
+with st.echo():
+    columns_sound = ['danceability','energy','loudness','speechiness','acousticness','instrumentalness','liveness','valence','tempo','mode','key']
 
-# Solo extraemos la información de importancia
-song = df_song[['id','name','id_artists','artists'] + columns_sound + ['time_signature','duration_ms']]
+st.write('Se extraen las columnas de interés')
+with st.echo():
+    song = df_song[['id','name','id_artists','artists'] + columns_sound + ['time_signature','duration_ms']]
+    
+st.write('Extraemos el id del artista de la primera posición de la lista de artistas ("id_artists"). Asumimos que el primero es el más relevante')
+with st.echo():
+    song['id_artists'] = song['id_artists'].str.replace('[','').str.replace(']','').str.replace(' ','').str.split(',').apply(lambda x: x[0]).str.replace("'",'')
 
-# Extraemos el id del artista de la primera posición de la lista de artistas ("id_artists"). Asumimos que el primero es el más relevante.
-song['id_artists'] = song['id_artists'].str.replace('[','').str.replace(']','').str.replace(' ','').str.split(',').apply(lambda x: x[0]).str.replace("'",'')
+st.write('Extraemos el nombre del artista de la primera posición de la lista de artistas ("artists"). Asumimos que el primero es el más relevante')
+with st.echo():
+    song['artists'] = song['artists'].str.replace('[','').str.replace(']','').str.replace(' ','').str.split(',').apply(lambda x: x[0]).str.replace("'",'')
 
-# Extraemos el nombre del artista de la primera posición de la lista de artistas ("artists"). Asumimos que el primero es el más relevante.
-song['artists'] = song['artists'].str.replace('[','').str.replace(']','').str.replace(' ','').str.split(',').apply(lambda x: x[0]).str.replace("'",'')
+st.write('Renombramos algunas columnas')
+with st.echo():
+    song = song.rename(columns = {'id':'Song_id','name':'Song','id_artists':'Artist_id','artists':'Artist'})
 
-# Renombramos algunas columnas
-song = song.rename(columns = {'id':'Song_id','name':'Song','id_artists':'Artist_id','artists':'Artist'})
+st.subheader('Dataset Final')
+    
+st.write('Juntamos los datos')
+with st.echo():
+    country_final = chart.merge(song, how = 'left', on = 'Song_id')
+    country_final = country_final.merge(artist, how = 'left', on = 'Artist_id')
 
-# Juntamos los datos
-country_final = chart.merge(song, how = 'left', on = 'Song_id')
-country_final = country_final.merge(artist, how = 'left', on = 'Artist_id')
+st.write('Extraemos las columnas relevantes')
+with st.echo():
+    country_final = country_final[['Song_x','Artist_x','Date','Ano','AnoMes','MesDia','Mes','Dia','Position','Streams',
+                                   'danceability','energy','loudness','speechiness','acousticness','instrumentalness','liveness','valence',
+                                   'tempo','mode','key','time_signature','duration_ms','Genre1']]
 
-# Extraemos las columnas relevantes
-country_final = country_final[['Song_x','Artist_x','Date','Ano','AnoMes','MesDia','Mes','Dia','Position','Streams',
-                               'danceability','energy','loudness','speechiness','acousticness','instrumentalness','liveness','valence',
-                               'tempo','mode','key','time_signature','duration_ms','Genre1']]
-                               
-# Renombramos algunas columnas
-country_final = country_final.rename(columns = {'Song_x':'Song','Artist_x':'Artist'})
-country_final.head()
-
-# Eliminamos cualquier registro que presente valores nulos
-country_final = country_final.dropna()
-
-# Dimensionalidad Final
-country_final.shape
-
-country_final.head(2)
+st.write('Eliminamos cualquier registro que presente valores nulos')
+with st.echo():
+    country_final = country_final.dropna()
+    
+st.write('Renombramos algunas columnas')
+with st.echo():
+    country_final = country_final.rename(columns = {'Song_x':'Song','Artist_x':'Artist'})
+    st.write(country_final.shape)
+    st.write(country_final.head(10))
 
     
 with st.sidebar:
