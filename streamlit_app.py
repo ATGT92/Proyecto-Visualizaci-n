@@ -186,6 +186,10 @@ if section == "Visualizacion":
     st.header('Visualizaciones')
 
     st.write('En esta sección se muestran las visualizaciones para entender el comportamiento de los charts, artistas y canciones más populares.')
+    st.subheader('Pupularidad vs Streams')
+    st.write('Una pregunta natural que surge es si la posición en el chart de Spotify se correlaciona con la cantidad de streams que tiene el artista. La\
+    respuesta a esto es que si como muestra el siguiente gráfico interactivo. En todos los años analizados se observa que a mejor ranking en el chart se\
+    condice con una mayor cantidad promedio de streams por artista. Es un resultado esperado pero interesante de corroborar con los datos.')
     
     with st.echo():
         df_artist_time = st.session_state.df.groupby(['Ano','Artist'], as_index=False).agg({'Streams':'mean', 'Position':'mean'})
@@ -197,22 +201,27 @@ if section == "Visualizacion":
         ).interactive()
    
     st.altair_chart(g1, use_container_width=True)
-
+    
+    
+    st.subheader('Artistas más escuchados')
+    st.write('En esta sección se muestran los artistas más escuchados - en términos de streams - de EEUU en Spotify. Los más populares son Post Malone XXXTentation y Drake.\
+    En general estos artistas tienen una cantidad de streams invariante en el tiempo, lo que quiere decir que se tienden a repetir año tras año')
+  
     with st.echo():
         artist_popular = st.session_state.df.groupby(['Ano','Artist'], as_index=False).agg({'Streams':'sum'})
         artist_popular = artist_popular.sort_values(['Ano', 'Streams'], ascending=False).groupby(['Ano']).head(20)
 
         g2 = alt.Chart(artist_popular).mark_circle().encode(
-            #x='Artist:N',
-            #y='Streams:Q',
-            #order=alt.Order("Streams", sort="descending")
             alt.X('Artist', sort=alt.EncodingSortField(field="Streams", op="sum", order='descending')),
             y='Streams:Q',
             color = 'Ano:N'
-            #color = alt.condition(brush, 'Ano:N', alt.value('lightgray'))
         ).interactive()
 
     st.altair_chart(g2, use_container_width=True)
+    
+    st.subheader('Propiedades Sonoras en el tiempo')
+    st.write('En esta sección se observa como varían las propiedades sonoras de las canciones más escuchadas en EEUU en el tiempo. Para esto se estudia \
+    **danceability**, **energy**, **speechiness**, **acousticness**, **instrumentalness**, **liveness** y **valence**.)
 
     with st.echo():
         sonido = st.session_state.df[['Ano','Position','danceability','energy','loudness','speechiness','acousticness','instrumentalness','liveness','valence']].groupby(['Ano','Position'], as_index=False).mean()
@@ -220,10 +229,8 @@ if section == "Visualizacion":
         g3 = alt.Chart(sonido).transform_fold(['danceability','energy','speechiness','acousticness','instrumentalness','liveness','valence'], as_=['key', 'value']).mark_boxplot(
         ).encode(x='Ano:N',
                  y='value:Q',
-                 row = 'key:N'
-                ).properties(
-            width=180,
-            height=250)
+                 column = 'key:N'
+                )
     
     st.altair_chart(g3, use_container_width=True)
 
