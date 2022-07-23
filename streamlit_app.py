@@ -175,18 +175,20 @@ if section == "Datos":
         country_final = country_final.rename(columns = {'Song_x':'Song','Artist_x':'Artist'})
         st.write(country_final.shape)
         st.write(country_final.head(10))
+        
+    st.session_state.df = country_final
 
     # add the link at the bottom of each page
     st.markdown("<a href='#linkto_top'>Link to top</a>", unsafe_allow_html=True)
 
     
-#if section == "Visualizacion":                  
+if section == "Visualizacion":                  
     st.header('Visualizaciones')
 
     st.write('En esta sección se muestran las visualizaciones para entender el comportamiento de los charts, artistas y canciones más populares.')
     
     with st.echo():
-        df_artist_time = country_final.groupby(['Ano','Artist'], as_index=False).agg({'Streams':'mean', 'Position':'mean'})
+        df_artist_time = st.session_state.df.groupby(['Ano','Artist'], as_index=False).agg({'Streams':'mean', 'Position':'mean'})
     
         g1 = alt.Chart(df_artist_time).mark_point().encode(
             x='Position',
@@ -197,7 +199,7 @@ if section == "Datos":
     st.altair_chart(g1, use_container_width=True)
 
     with st.echo():
-        artist_popular = country_final.groupby(['Ano','Artist'], as_index=False).agg({'Streams':'sum'})
+        artist_popular = st.session_state.df.groupby(['Ano','Artist'], as_index=False).agg({'Streams':'sum'})
         artist_popular = artist_popular.sort_values(['Ano', 'Streams'], ascending=False).groupby(['Ano']).head(20)
 
         g2 = alt.Chart(artist_popular).mark_circle().encode(
@@ -213,12 +215,12 @@ if section == "Datos":
     st.altair_chart(g2, use_container_width=True)
 
     with st.echo():
-        sonido = country_final[['Ano','Position','danceability','energy','loudness','speechiness','acousticness','instrumentalness','liveness','valence']].groupby(['Ano','Position'], as_index=False).mean()
+        sonido = st.session_state.df[['Ano','Position','danceability','energy','loudness','speechiness','acousticness','instrumentalness','liveness','valence']].groupby(['Ano','Position'], as_index=False).mean()
 
         g3 = alt.Chart(sonido).transform_fold(['danceability','energy','speechiness','acousticness','instrumentalness','liveness','valence'], as_=['key', 'value']).mark_boxplot(
         ).encode(x='Ano:N',
                  y='value:Q',
-                 column = 'key:N'
+                 row = 'key:N'
                 ).properties(
             width=180,
             height=250)
