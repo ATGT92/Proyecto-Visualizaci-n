@@ -61,21 +61,23 @@ def DateTransformation(data):
 
   return data
 
-st.markdown('Charts: contiene el ranking semanal de las 200 canciones más populares en Spotify')
+st.header('Datos')
+
+st.markdown('**- Charts:** contiene el ranking semanal de las 200 canciones más populares en Spotify')
 
 with st.echo():
     
     df_chart = pd.read_csv('charts.csv')
     st.write(df_chart.head(5))
 
-st.markdown('Artist: contiene información sobre los artistas musicales')
+st.markdown('**- Artist:** contiene información sobre los artistas musicales')
 
 with st.echo():
     
     df_artist = pd.read_csv("artists.csv")
     st.write(df_artist.head(5))
 
-st.markdown('Song: contiene información sobre las canciones expresando diferentes atributos sonoros de las mismas')
+st.markdown('**- Song:** contiene información sobre las canciones expresando diferentes atributos sonoros de las mismas')
 
 with st.echo():
     
