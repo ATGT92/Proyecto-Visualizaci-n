@@ -12,6 +12,7 @@ import streamlit as st
 import time
 
 st.title("Rankings de Artistas y Canciones en Spotify")
+st.subtitle("Alonso Guzmán Toro")
 
 pages = ["Introduccion", "Datos","Visualizacion"]
 section = st.sidebar.radio('', pages)     
@@ -221,7 +222,10 @@ if section == "Visualizacion":
     
     st.subheader('Propiedades Sonoras en el tiempo')
     st.write('En esta sección se observa como varían las propiedades sonoras de las canciones más escuchadas en EEUU en el tiempo. Para esto se estudia \
-    **danceability**, **energy**, **speechiness**, **acousticness**, **instrumentalness**, **liveness** y **valence**.')
+    **danceability**, **energy**, **speechiness**, **acousticness**, **instrumentalness**, **liveness** y **valence**. Para esto se hace un boxplot de cada característica\
+    en el tiempo sobre todas las canciones de los rankings. En general todas las métricas tienen un comportamiento constante en el tiempo salvo **danceability** Y \
+    **acousticness**, donde el primero tiende a bajar en el tiempo (las canciones más populares tienden a bajar su característica de bailables) y la segunda sube en el tiempo\
+    (las canciones más populares tienden a ser más acústicas).')
 
     with st.echo():
         sonido = st.session_state.df[['Ano','Position','danceability','energy','loudness','speechiness','acousticness','instrumentalness','liveness','valence']].groupby(['Ano','Position'], as_index=False).mean()
