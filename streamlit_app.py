@@ -9,6 +9,7 @@ import glob
 import datetime
 import altair as alt
 import streamlit as st
+import time
 
 st.title("Rankings de Artistas y Canciones en Spotify")
 
