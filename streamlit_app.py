@@ -63,18 +63,24 @@ def DateTransformation(data):
 
 st.markdown('Charts: contiene el ranking semanal de las 200 canciones más populares en Spotify')
 
-# Datos charts o ranking de canciones
-df_chart = pd.read_csv('charts.csv')
+with st.echo():
+    
+    df_chart = pd.read_csv('charts.csv')
+    st.write(df_chart.head(5))
 
 st.markdown('Artist: contiene información sobre los artistas musicales')
 
-# Datos artistas
-df_artist = pd.read_csv("artists.csv")
+with st.echo():
+    
+    df_artist = pd.read_csv("artists.csv")
+    st.write(df_artist.head(5))
 
 st.markdown('Song: contiene información sobre las canciones expresando diferentes atributos sonoros de las mismas')
 
-# Datos canciones
-df_song = pd.read_csv('tracks.csv')
+with st.echo():
+    
+    df_song = pd.read_csv('tracks.csv')
+    st.write(df_song.head(5))
 
 # Extraemos solo los datos de EEUU
 chart = df_chart[df_chart['name'].isin(['United States'])]
