@@ -13,12 +13,16 @@ import time
 
 st.title("Rankings de Artistas y Canciones en Spotify")
 
-def my_widget(string,key):
-    st.subheader(string)
-    return st.button("Sección: " + key)
+
 
 with st.sidebar:
     st.button("Introducción")
+    
+with st.sidebar:
+    st.button("Datos")
+    
+with st.sidebar:
+    st.button("Visualizaciones")
 
 
 # Función para transformar algunas columnas tipo fecha
