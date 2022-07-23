@@ -12,7 +12,7 @@ import streamlit as st
 import time
 
 st.title("Rankings de Artistas y Canciones en Spotify")
-st.subtitle("Alonso Guzmán Toro")
+st.caption("Alonso Guzmán Toro")
 
 pages = ["Introduccion", "Datos","Visualizacion"]
 section = st.sidebar.radio('', pages)     
