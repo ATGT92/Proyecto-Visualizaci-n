@@ -171,7 +171,7 @@ if section == "Datos":
 
     st.write('Renombramos algunas columnas')
     with st.echo():
-        @st.cache()
+        #@st.cache()
         country_final = country_final.rename(columns = {'Song_x':'Song','Artist_x':'Artist'})
         st.write(country_final.shape)
         st.write(country_final.head(10))
@@ -180,7 +180,7 @@ if section == "Datos":
     st.markdown("<a href='#linkto_top'>Link to top</a>", unsafe_allow_html=True)
 
     
-if section == "Visualizacion":                  
+#if section == "Visualizacion":                  
     st.header('Visualizaciones')
 
     st.write('En esta sección se muestran las visualizaciones para entender el comportamiento de los charts, artistas y canciones más populares.')
