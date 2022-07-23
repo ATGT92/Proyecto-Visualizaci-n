@@ -182,18 +182,15 @@ if section == "Datos":
 if section == "Visualizacion":                  # This is the beginning of my first page
     st.header('Visualizaciones')
 
-    st.write('El objetivo principal de este proyecto es entender - por medio de visualizaciones - el comportamiento de los ranking de canciones \
-              más populares en EEUU en la plataforma Spotify, entre los años 2017 y 2021. Específicamente se desea mostrar cuales son los artistas,\
-              canciones y géneros musicales más populares y la relación de estas preferencias con algunas características sonoras por canción que disponibiliza\
-              la aplicación a través de su API.')
+    st.write('En esta sección se muestran las visualizaciones para entender el comportamiento de los charts, artistas y canciones más populares.')
     
     df_artist_time = country_final.groupby(['Ano','Artist'], as_index=False).agg({'Streams':'mean', 'Position':'mean'})
     
     g1 = alt.Chart(df_artist_time).mark_point().encode(
-                x='Position',
-                y='Streams',
-                color='Ano:N'
-            ).interactive()
+        x='Position',
+        y='Streams',
+        color='Ano:N'
+    ).interactive()
    
     st.altair_chart(g1, use_container_width=True)
 
@@ -201,12 +198,12 @@ if section == "Visualizacion":                  # This is the beginning of my fi
     artist_popular = artist_popular.sort_values(['Ano', 'Streams'], ascending=False).groupby(['Ano']).head(20)
 
     g2 = alt.Chart(artist_popular).mark_circle().encode(
-            #x='Artist:N',
-            #y='Streams:Q',
-            #order=alt.Order("Streams", sort="descending")
-            alt.X('Artist', sort=alt.EncodingSortField(field="Streams", op="sum", order='descending')),
-            y='Streams:Q',
-            color = 'Ano:N'
+        #x='Artist:N',
+        #y='Streams:Q',
+        #order=alt.Order("Streams", sort="descending")
+        alt.X('Artist', sort=alt.EncodingSortField(field="Streams", op="sum", order='descending')),
+        y='Streams:Q',
+        color = 'Ano:N'
         #color = alt.condition(brush, 'Ano:N', alt.value('lightgray'))
     ).interactive()
     
@@ -214,14 +211,13 @@ if section == "Visualizacion":                  # This is the beginning of my fi
 
     sonido = country_final[['Ano','Position','danceability','energy','loudness','speechiness','acousticness','instrumentalness','liveness','valence']].groupby(['Ano','Position'], as_index=False).mean()
     
-    g3 = alt.Chart(sonido).transform_fold(['danceability','energy','speechiness','acousticness','instrumentalness','liveness','valence'], as_=['key', 'value']).mark_boxplot().encode(
-                x='Ano:N',
-                y='value:Q',
-                column = 'key:N'
+    g3 = alt.Chart(sonido).transform_fold(['danceability','energy','speechiness','acousticness','instrumentalness','liveness','valence'], as_=['key', 'value']).mark_boxplot(
+    ).encode(x='Ano:N',
+             y='value:Q',
+             column = 'key:N'
             ).properties(
-                width=180,
-                height=250
-            )
+        width=180,
+        height=250)
     
     st.altair_chart(g3, use_container_width=True)
 
