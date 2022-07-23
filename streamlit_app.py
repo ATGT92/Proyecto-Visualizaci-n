@@ -13,6 +13,26 @@ import time
 
 st.title("Rankings de Artistas y Canciones en Spotify")
 
+pages = ["Page 1", "Page 2"]
+section = st.sidebar.radio('', pages)     # this is my sidebar radio button widget
+
+# hidden div with anchor
+st.markdown("<div id='linkto_top'></div>", unsafe_allow_html=True)    
+
+if section == "Page 1":                  # This is the beginning of my first page
+    st.header("This is my first page")
+    st.write("Let's pretend there is a lot displayed on this page")
+
+    # add the link at the bottom of each page
+    st.markdown("<a href='#linkto_top'>Link to top</a>", unsafe_allow_html=True)
+
+if section == "Page 2":
+    st.header("This is my second page")
+    st.write("Let's pretend there is a lot displayed on this page")
+
+    # add the link at the bottom of each page
+    st.markdown("<a href='#linkto_top'>Link to top</a>", unsafe_allow_html=True)
+
 
 
 with st.sidebar:
