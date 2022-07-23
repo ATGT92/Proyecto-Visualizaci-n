@@ -11,6 +11,9 @@ import seaborn as sns
 import glob
 import datetime
 import altair as alt
+import streamlit as st
+
+st.title("Rankings de Artistas y Canciones en Spotify")
 
 # Función para transformar algunas columnas tipo fecha
 def DateTransformation(data):
