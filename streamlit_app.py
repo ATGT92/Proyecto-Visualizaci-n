@@ -58,14 +58,16 @@ st.subheader('Transformación de Data')
     
 st.write('A continuación se describen las transformaciones de datos realizadas para llegar al dataset final con el cual se trabajarán las visualizaciones')
 
+st.write('Se extraen únicamente los ranking de canciones de EEUU para trabajar acotadamente.')    
 with st.echo():
-    st.write('Se extraen únicamente los ranking de canciones de EEUU para trabajar acotadamente.')    
     chart = df_chart[df_chart['name'].isin(['United States'])]
 
-    st.write('Se reajusta el nombre de la columna **Track Name** a **Song** del dataset **chart**')
+st.write('Se reajusta el nombre de la columna **Track Name** a **Song** del dataset **chart**')
+with st.echo():
     chart = chart.rename(columns={'Track Name':'Song'})
 
-    st.write('A través de la siguiente función se formatea en distintas variables de tiempo, la fecha en que estuvo presente en el ranking la canción de cierto artista')
+st.write('A través de la siguiente función se formatea en distintas variables de tiempo, la fecha en que estuvo presente en el ranking la canción de cierto artista')
+with st.echo():
     def DateTransformation(data):
       data['Date']   = data['Date'].astype('datetime64[ns]')
       data['Ano']    = data['Date'].dt.year
@@ -78,17 +80,21 @@ with st.echo():
 
     chart = DateTransformation(chart)
     
-    st.write('Se extrae el id de cada canción para poder cruzarlo posteriormente con el dataset de canciones. Para esto se toma se toma el 5to elemento de la lista que viene\
-    en el campo URL')
+st.write('Se extrae el id de cada canción para poder cruzarlo posteriormente con el dataset de canciones. Para esto se toma se toma el 5to elemento de la lista que viene\
+          en el campo URL') 
+with st.echo():
     chart['Song_id'] = chart['URL'].str.split('/').str[4]
 
-    st.write('Se extraen solo las columnas de interés')
+st.write('Se extraen solo las columnas de interés')
+with st.echo():
     chart = chart[['Song_id','Song','Artist','Date','Ano','AnoMes','MesDia','Mes','Dia','Position','Streams']] 
 
-    st.write('Se eliminan posibles filas duplicadas')
+st.write('Se eliminan posibles filas duplicadas')
+with st.echo():
     chart = chart.drop_duplicates()
     
-    st.write('Se elimna cualquier registro que presente nulls')
+st.write('Se elimna cualquier registro que presente nulls')
+with st.echo():
     chart = chart.dropna()
 
     
