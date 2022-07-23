@@ -18,7 +18,7 @@ def my_widget(string,key):
     return st.button("Sección: " + key)
 
 with st.sidebar:
-    clicked = my_widget("Introducción","1")
+    st.button("Introducción")
 
 
 # Función para transformar algunas columnas tipo fecha
