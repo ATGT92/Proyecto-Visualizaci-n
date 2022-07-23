@@ -12,10 +12,13 @@ import streamlit as st
 
 st.title("Rankings de Artistas y Canciones en Spotify")
 
-add_selectbox = st.sidebar.selectbox(
-    "How would you like to be contacted?",
-    ("Email", "Home phone", "Mobile phone")
-)
+with st.sidebar:
+    with st.echo():
+        st.write("This code will be printed to the sidebar.")
+
+    with st.spinner("Loading..."):
+        time.sleep(5)
+    st.success("Done!")
 
 # Función para transformar algunas columnas tipo fecha
 def DateTransformation(data):
