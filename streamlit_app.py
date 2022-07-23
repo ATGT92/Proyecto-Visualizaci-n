@@ -156,9 +156,16 @@ with st.echo():
 
 st.write('Extraemos las columnas relevantes')
 with st.echo():
-    country_final = country_final[['Song_x','Artist_x','Date','Ano','AnoMes','MesDia','Mes','Dia','Position','Streams',
-                                   'danceability','energy','loudness','speechiness','acousticness','instrumentalness','liveness','valence',
-                                   'tempo','mode','key','time_signature','duration_ms','Genre1']]
+    country_final = country_final[['Song_x','Artist_x',
+                                   'Date','Ano','AnoMes',
+                                   'MesDia','Mes','Dia',
+                                   'Position','Streams',
+                                   'danceability','energy',
+                                   'loudness','speechiness',
+                                   'acousticness','instrumentalness',
+                                   'liveness','valence',
+                                   'tempo','mode','key',
+                                   'time_signature','duration_ms','Genre1']]
 
 st.write('Eliminamos cualquier registro que presente valores nulos')
 with st.echo():
