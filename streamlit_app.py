@@ -13,7 +13,7 @@ import time
 
 st.title("Rankings de Artistas y Canciones en Spotify")
 
-pages = ["Introduccion", "Datos"]
+pages = ["Introduccion", "Datos","Visualizacion"]
 section = st.sidebar.radio('', pages)     # this is my sidebar radio button widget
 
 # hidden div with anchor
@@ -27,8 +27,6 @@ if section == "Introduccion":                  # This is the beginning of my fir
               canciones y géneros musicales más populares y la relación de estas preferencias con algunas características sonoras por canción que disponibiliza\
               la aplicación a través de su API.')
 
-
-    # add the link at the bottom of each page
     st.markdown("<a href='#linkto_top'>Link to top</a>", unsafe_allow_html=True)
 
 if section == "Datos":
@@ -40,26 +38,22 @@ if section == "Datos":
     st.markdown('**- Charts:** contiene el ranking semanal de las 200 canciones más populares en Spotify')
 
     with st.echo():
-
         df_chart = pd.read_csv('charts.csv')
         st.write(df_chart.head(5))
 
     st.markdown('**- Artists:** contiene información sobre los artistas musicales')
 
     with st.echo():
-
         df_artist = pd.read_csv("artists.csv")
         st.write(df_artist.head(5))
 
     st.markdown('**- Song:** contiene información sobre las canciones expresando diferentes atributos sonoros de las mismas')
 
     with st.echo():
-
         df_song = pd.read_csv('tracks.csv')
         st.write(df_song.head(5))
 
     st.subheader('Transformación de Data Chart')
-
     st.write('A continuación se describen las transformaciones de datos realizadas para al dataset **chart** llegar al dataset final con el cual se trabajarán las visualizaciones:')
 
     st.write('Se extraen únicamente los ranking de canciones de EEUU para trabajar acotadamente.')    
@@ -184,51 +178,46 @@ if section == "Datos":
     # add the link at the bottom of each page
     st.markdown("<a href='#linkto_top'>Link to top</a>", unsafe_allow_html=True)
 
-
-
-
     
-with st.sidebar:
-    st.button("Visualizaciones")
+if section == "Visualizacion":                  # This is the beginning of my first page
+    st.header('Visualizaciones')
 
+    st.write('El objetivo principal de este proyecto es entender - por medio de visualizaciones - el comportamiento de los ranking de canciones \
+              más populares en EEUU en la plataforma Spotify, entre los años 2017 y 2021. Específicamente se desea mostrar cuales son los artistas,\
+              canciones y géneros musicales más populares y la relación de estas preferencias con algunas características sonoras por canción que disponibiliza\
+              la aplicación a través de su API.')
+    
+    df_artist_time = country_final.groupby(['Ano','Artist'], as_index=False).agg({'Streams':'mean', 'Position':'mean'})
 
-df_artist_time = country_final.groupby(['Ano','Artist'], as_index=False).agg({'Streams':'mean', 'Position':'mean'})
-print(df_artist_time.shape)
-df_artist_time.head(10)
+    st.markdown("<a href='#linkto_top'>Link to top</a>", unsafe_allow_html=True)
 
-alt.Chart(df_artist_time).mark_point().encode(
-    x='Position',
-    y='Streams',
-    color='Ano:N'
-).interactive()
+    alt.Chart(df_artist_time).mark_point().encode(
+        x='Position',
+        y='Streams',
+        color='Ano:N'
+    ).interactive()
 
-artist_popular = country_final.groupby(['Ano','Artist'], as_index=False).agg({'Streams':'sum'})
-artist_popular = artist_popular.sort_values(['Ano', 'Streams'], ascending=False).groupby(['Ano']).head(20)
-print(artist_popular.shape)
-artist_popular.head(10)
+    artist_popular = country_final.groupby(['Ano','Artist'], as_index=False).agg({'Streams':'sum'})
+    artist_popular = artist_popular.sort_values(['Ano', 'Streams'], ascending=False).groupby(['Ano']).head(20)
 
-#brush = alt.selection_interval()
+    alt.Chart(artist_popular).mark_circle().encode(
+        #x='Artist:N',
+        #y='Streams:Q',
+        #order=alt.Order("Streams", sort="descending")
+        alt.X('Artist', sort=alt.EncodingSortField(field="Streams", op="sum", order='descending')),
+        y='Streams:Q',
+        color = 'Ano:N'
+        #color = alt.condition(brush, 'Ano:N', alt.value('lightgray'))
+    ).interactive()#.add_selection(
+     #   brush
+    #)
 
-alt.Chart(artist_popular).mark_circle().encode(
-    #x='Artist:N',
-    #y='Streams:Q',
-    #order=alt.Order("Streams", sort="descending")
-    alt.X('Artist', sort=alt.EncodingSortField(field="Streams", op="sum", order='descending')),
-    y='Streams:Q',
-    color = 'Ano:N'
-    #color = alt.condition(brush, 'Ano:N', alt.value('lightgray'))
-).interactive()#.add_selection(
- #   brush
-#)
-
-sonido = country_final[['Ano','Position','danceability','energy','loudness','speechiness','acousticness','instrumentalness','liveness','valence']].groupby(['Ano','Position'], as_index=False).mean()
-sonido.head(10)
-
-alt.Chart(sonido).transform_fold(['danceability','energy','speechiness','acousticness','instrumentalness','liveness','valence'], as_=['key', 'value']).mark_boxplot().encode(
-    x='Ano:N',
-    y='value:Q',
-    column = 'key:N'
-).properties(
-    width=180,
-    height=250
-)
+    sonido = country_final[['Ano','Position','danceability','energy','loudness','speechiness','acousticness','instrumentalness','liveness','valence']].groupby(['Ano','Position'], as_index=False).mean()
+    alt.Chart(sonido).transform_fold(['danceability','energy','speechiness','acousticness','instrumentalness','liveness','valence'], as_=['key', 'value']).mark_boxplot().encode(
+        x='Ano:N',
+        y='value:Q',
+        column = 'key:N'
+    ).properties(
+        width=180,
+        height=250
+    )
