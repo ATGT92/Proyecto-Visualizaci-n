@@ -13,13 +13,19 @@ import time
 
 st.title("Rankings de Artistas y Canciones en Spotify")
 
-with st.sidebar:
-    with st.echo():
-        st.write("Introducción")
-        
-    with st.echo():
-        st.write("Datos")
+#with st.sidebar:
+#    with st.echo():
+#        st.write("Introducción")
+#        
+#    with st.echo():
+#        st.write("Datos")
 
+# Using "with" notation
+with st.sidebar:
+    add_radio = st.radio(
+        "Choose a shipping method",
+        ("Standard (5-15 days)", "Express (2-5 days)")
+    )
 
 
 # Función para transformar algunas columnas tipo fecha
