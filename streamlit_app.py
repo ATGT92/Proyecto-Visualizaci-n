@@ -13,19 +13,12 @@ import time
 
 st.title("Rankings de Artistas y Canciones en Spotify")
 
-#with st.sidebar:
-#    with st.echo():
-#        st.write("Introducción")
-#        
-#    with st.echo():
-#        st.write("Datos")
+def my_widget(string,key):
+    st.subheader(string)
+    return st.button("Sección: " + key)
 
-# Using "with" notation
 with st.sidebar:
-    add_radio = st.radio(
-        "Choose a shipping method",
-        ("Standard (5-15 days)", "Express (2-5 days)")
-    )
+    clicked = my_widget("Introducción","1")
 
 
 # Función para transformar algunas columnas tipo fecha
