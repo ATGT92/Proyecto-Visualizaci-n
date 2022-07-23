@@ -17,51 +17,21 @@ st.title("Rankings de Artistas y Canciones en Spotify")
 
 with st.sidebar:
     st.button("Introducción")
+
+st.header('Introducción')
     
 st.write('El objetivo principal de este proyecto es entender - por medio de visualizaciones - el comportamiento de los ranking de canciones \
           más populares en EEUU en la plataforma Spotify, entre los años 2017 y 2021. Específicamente se desea mostrar cuales son los artistas,\
           canciones y géneros musicales más populares y la relación de estas preferencias con algunas características sonoras por canción que disponibiliza\
           la aplicación a través de su API.')
-    
-def get_user_name():
-    return 'John'
-    
-with st.echo():
-    # Everything inside this block will be both printed to the screen
-    # and executed.
 
-    def get_punctuation():
-        return '!!!'
-
-    greeting = "Hi there, "
-    value = get_user_name()
-    punctuation = get_punctuation()
-
-    st.write(greeting, value, punctuation)
-
-# And now we're back to _not_ printing to the screen
-foo = 'bar'
-st.write('Done!')
-    
 with st.sidebar:
     st.button("Datos")
-    
-with st.sidebar:
-    st.button("Visualizaciones")
-
-
-# Función para transformar algunas columnas tipo fecha
-def DateTransformation(data):
-  data['Date']   = data['Date'].astype('datetime64[ns]')
-  data['Ano']    = data['Date'].dt.year
-  data['Mes']    = data['Date'].dt.month
-  data['Dia']    = data['Date'].dt.day
-  data['AnoMes'] = data['Date'].dt.strftime('%Y%m')
-  data['MesDia'] = data['Date'].dt.strftime('%m%d')
-
-  return data
 
 st.header('Datos')
+
+st.write('En esta sección se muestran los datos con los que se trabajarán y las transformaciones para llegar al dataset final. Los datos se obtuvieron de la\
+platafoma Kaggel y consisten en dato sobre los rankings semanales de canciones (charts), artistas y canciones.')
 
 st.markdown('**- Charts:** contiene el ranking semanal de las 200 canciones más populares en Spotify')
 
@@ -70,7 +40,7 @@ with st.echo():
     df_chart = pd.read_csv('charts.csv')
     st.write(df_chart.head(5))
 
-st.markdown('**- Artist:** contiene información sobre los artistas musicales')
+st.markdown('**- Artists:** contiene información sobre los artistas musicales')
 
 with st.echo():
     
@@ -83,29 +53,47 @@ with st.echo():
     
     df_song = pd.read_csv('tracks.csv')
     st.write(df_song.head(5))
+    
+st.subheader('Transformación de Data')
+    
+st.write('A continuación se describen las transformaciones de datos realizadas para llegar al dataset final con el cual se trabajarán las visualizaciones')
 
-# Extraemos solo los datos de EEUU
-chart = df_chart[df_chart['name'].isin(['United States'])]
+with st.echo():
+    st.write('Se extraen únicamente los ranking de canciones de EEUU para trabajar acotadamente.')    
+    chart = df_chart[df_chart['name'].isin(['United States'])]
 
-# Reajustamos el nombre de una columna que presenta espacios
-chart = chart.rename(columns={'Track Name':'Song'})
+    st.write('Se reajusta el nombre de la columna **Track Name** a **Song** del dataset **chart**')
+    chart = chart.rename(columns={'Track Name':'Song'})
 
-# Transformamos la función DateTransformation
-chart = DateTransformation(chart)
+    st.write('A través de la siguiente función se formatea en distintas variables de tiempo, la fecha en que estuvo presente en el ranking la canción de cierto artista')
+    def DateTransformation(data):
+      data['Date']   = data['Date'].astype('datetime64[ns]')
+      data['Ano']    = data['Date'].dt.year
+      data['Mes']    = data['Date'].dt.month
+      data['Dia']    = data['Date'].dt.day
+      data['AnoMes'] = data['Date'].dt.strftime('%Y%m')
+      data['MesDia'] = data['Date'].dt.strftime('%m%d')
+  
+      return data
 
-# Extraemos el id de la canción tomando el 5to elemento de la lista formada por el campo URL luego de dividirlo por "/"
-chart['Song_id'] = chart['URL'].str.split('/').str[4]
+    chart = DateTransformation(chart)
+    
+    st.write('Se extrae el id de cada canción para poder cruzarlo posteriormente con el dataset de canciones. Para esto se toma se toma el 5to elemento de la lista que viene\
+    en el campo URL')
+    chart['Song_id'] = chart['URL'].str.split('/').str[4]
 
-# Extremos solo las columnas de interés: por ejemplo URL ya no es relevante 
+    st.write('Se extraen solo las columnas de interés')
+    chart = chart[['Song_id','Song','Artist','Date','Ano','AnoMes','MesDia','Mes','Dia','Position','Streams']] 
 
-chart = chart[['Song_id','Song','Artist','Date','Ano','AnoMes','MesDia','Mes','Dia','Position','Streams']] 
+    st.write('Se eliminan posibles filas duplicadas')
+    chart = chart.drop_duplicates()
+    
+    st.write('Se elimna cualquier registro que presente nulls')
+    chart = chart.dropna()
 
-# Eliminamos posibles filas duplicadas
-chart = chart.drop_duplicates()
-
-# Eliminamos los pocos nulls que hay
-chart = chart.dropna()
-
+    
+    
+    
 # Ajustamos los nombres de alguna columnas
 artist = df_artist.rename(columns = {'id':'Artist_id','name':'Artist'})
 
@@ -158,6 +146,11 @@ country_final = country_final.dropna()
 country_final.shape
 
 country_final.head(2)
+
+    
+with st.sidebar:
+    st.button("Visualizaciones")
+
 
 df_artist_time = country_final.groupby(['Ano','Artist'], as_index=False).agg({'Streams':'mean', 'Position':'mean'})
 print(df_artist_time.shape)
