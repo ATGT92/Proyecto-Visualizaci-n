@@ -15,11 +15,12 @@ st.title("Rankings de Artistas y Canciones en Spotify")
 
 with st.sidebar:
     with st.echo():
-        st.write("This code will be printed to the sidebar.")
+        st.write("Introducción")
+        
+    with st.echo():
+        st.write("Datos")
 
-    with st.spinner("Loading..."):
-        time.sleep(5)
-    st.success("Done!")
+
 
 # Función para transformar algunas columnas tipo fecha
 def DateTransformation(data):
