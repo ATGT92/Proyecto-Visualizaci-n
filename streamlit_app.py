@@ -1,6 +1,3 @@
-from google.colab import drive
-drive.mount('/content/gdrive/')
-
 # Libererías
 
 import numpy as np
@@ -26,17 +23,14 @@ def DateTransformation(data):
 
   return data
 
-# Carpeta con los datos
-!ls "/content/gdrive/MyDrive/Proyecto_Data_Science/4_Datos"
-
 # Datos charts o ranking de canciones
-df_chart = pd.read_csv('/content/gdrive/MyDrive/Proyecto_Data_Science/4_Datos/charts.csv')
+df_chart = pd.read_csv('charts.csv')
 
 # Datos artistas
-df_artist = pd.read_csv("/content/gdrive/MyDrive/Proyecto_Data_Science/4_Datos/artists.csv")
+df_artist = pd.read_csv("artists.csv")
 
 # Datos canciones
-df_song = pd.read_csv('/content/gdrive/MyDrive/Proyecto_Data_Science/4_Datos/tracks.csv')
+df_song = pd.read_csv('tracks.csv')
 
 # Extraemos solo los datos de EEUU
 chart = df_chart[df_chart['name'].isin(['United States'])]
