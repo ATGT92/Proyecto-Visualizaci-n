@@ -260,7 +260,9 @@ if section == "Visualizacion":
             interval
         )
 
-        alt.vconcat(scatter,bar)
+        g4 = alt.vconcat(scatter,bar)
+        
+    st.altair_chart(g3, use_container_width=True)
         
 
     st.markdown("<a href='#linkto_top'>Link to top</a>", unsafe_allow_html=True)
