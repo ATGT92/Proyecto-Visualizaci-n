@@ -261,8 +261,7 @@ if section == "Visualizacion":
         )
 
         g4 = alt.vconcat(scatter,bar)
-        g4
-        g4.properties(background = '#f9f9f9',
+        properties = alt.properties(background = '#f9f9f9',
                     title = alt.TitleParams(text = 'Comportamiento de Streams vs Posición en el Ranking Spotify por año', 
                                             font = 'Ubuntu Mono', 
                                             fontSize = 22, 
@@ -274,7 +273,7 @@ if section == "Visualizacion":
                                             )
                     )
         
-    st.altair_chart(g4, use_container_width=True)
+    st.altair_chart(g4+properties, use_container_width=True)
         
 
     st.markdown("<a href='#linkto_top'>Link to top</a>", unsafe_allow_html=True)
