@@ -303,8 +303,8 @@ if section == "Visualizacion":
         interval3 = alt.selection_interval(encodings = ['y'])
         interval4 = alt.selection_interval(encodings = ['y'])
 
-        width = 250
-        height = 300
+        width = 200
+        height = 250
         height2 = 100
 
         b1 = alt.Chart(genres).transform_window(
