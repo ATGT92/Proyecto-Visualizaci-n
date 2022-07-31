@@ -490,3 +490,4 @@ if section == "Visualizacion":
     st.altair_chart(g6, use_container_width=True)
 
     st.markdown("<a href='#linkto_top'>Link to top</a>", unsafe_allow_html=True)
+    
