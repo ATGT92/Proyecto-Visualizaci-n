@@ -450,7 +450,7 @@ if section == "Visualizacion":
         
         
         
-        st.altair_chart(g5, use_container_width=True)
+    st.altair_chart(g5, use_container_width=True)
 
         
 
