@@ -485,6 +485,7 @@ if section == "Visualizacion":
         selection
     )
     
+    
     g6 = alt.hconcat(g6, legend)
     st.altair_chart(g6, use_container_width=True)
 
