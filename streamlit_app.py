@@ -276,181 +276,181 @@ if section == "Visualizacion":
     st.altair_chart(g4, use_container_width=True)
     
     #with st.echo():
-        genres = st.session_state.df[['Ano',
-                                'Genre1',
-                                'Streams',
-                                'danceability',
-                                'energy',
-                                'speechiness',
-                                'acousticness',
-                                'instrumentalness',
-                                'liveness',
-                                'valence']].groupby(['Ano','Genre1']).agg({'Streams':'sum',
-                                                                           'danceability':'mean',
-                                                                           'energy':'mean',
-                                                                           'speechiness':'mean',
-                                                                           'acousticness':'mean',
-                                                                           'instrumentalness':'mean',
-                                                                           'liveness':'mean',
-                                                                           'valence':'mean'
-                                                                          }).reset_index()
+    genres = st.session_state.df[['Ano',
+                            'Genre1',
+                            'Streams',
+                            'danceability',
+                            'energy',
+                            'speechiness',
+                            'acousticness',
+                            'instrumentalness',
+                            'liveness',
+                            'valence']].groupby(['Ano','Genre1']).agg({'Streams':'sum',
+                                                                       'danceability':'mean',
+                                                                       'energy':'mean',
+                                                                       'speechiness':'mean',
+                                                                       'acousticness':'mean',
+                                                                       'instrumentalness':'mean',
+                                                                       'liveness':'mean',
+                                                                       'valence':'mean'
+                                                                      }).reset_index()
+
+    genres = genres.set_index(['Ano','Genre1','Streams'])
+    genres = genres.stack().reset_index(name = 'Valor').rename(columns={'level_3':'Variable'})
+
+    interval1 = alt.selection_interval(encodings = ['y'])
+    interval2 = alt.selection_interval(encodings = ['y'])
+    interval3 = alt.selection_interval(encodings = ['y'])
+    interval4 = alt.selection_interval(encodings = ['y'])
+
+    width = 200
+    height = 250
+    height2 = 100
+
+    b1 = alt.Chart(genres).transform_window(
+        rank='rank(sum(Streams))',
+        sort=[alt.SortField('Streams', order='descending')]
+    ).transform_filter(
+        alt.datum.rank <= 1000
+    ).mark_bar().encode(
+        x = alt.X('mean(Streams):Q', scale=alt.Scale(domain=[0, 150000000]), title='Cantidad de Streams',axis=alt.Axis(labelExpr='datum.value / 1E6 + "M"')),
+        y = alt.Y('Genre1:N', sort = '-x', title='Género Musical'),
+        column = alt.Column('Ano:N', title = "")
+    ).transform_filter(
+        alt.FieldEqualPredicate(field='Ano', equal=2017)
+    ).properties(
+        width=width,
+        height=height,
+        selection = interval1
+    )
+
+    b2 = alt.Chart(genres).transform_window(
+        rank='rank(sum(Streams))',
+        sort=[alt.SortField('Streams', order='descending')]
+    ).transform_filter(
+        alt.datum.rank <= 1000
+    ).mark_bar().encode(
+      x = alt.X('mean(Streams):Q', scale=alt.Scale(domain=[0, 150000000]), title='Cantidad de Streams',axis=alt.Axis(labelExpr='datum.value / 1E6 + "M"')),
+        y = alt.Y('Genre1:N', sort = '-x', title='Género Musical'),
+        column = alt.Column('Ano:N', title = "")
+    ).transform_filter(
+        alt.FieldEqualPredicate(field='Ano', equal=2018)
+    ).properties(
+        width=width,
+        height=height,
+        selection = interval2
+    )
+
+    b3 = alt.Chart(genres).transform_window(
+        rank='rank(sum(Streams))',
+        sort=[alt.SortField('Streams', order='descending')]
+    ).transform_filter(
+        alt.datum.rank <= 1000
+    ).mark_bar().encode(
+        x = alt.X('mean(Streams):Q', scale=alt.Scale(domain=[0, 150000000]), title='Cantidad de Streams',axis=alt.Axis(labelExpr='datum.value / 1E6 + "M"')),
+        y = alt.Y('Genre1:N', sort = '-x', title='Género Musical'),
+        column = alt.Column('Ano:N', title = "")
+    ).transform_filter(
+        alt.FieldEqualPredicate(field='Ano', equal=2019)
+    ).properties(
+        width=width,
+        height=height,
+        selection = interval3
+    )
+
+    b4 = alt.Chart(genres).transform_window(
+        rank='rank(sum(Streams))',
+        sort=[alt.SortField('Streams', order='descending')]
+    ).transform_filter(
+        alt.datum.rank <= 1000
+    ).mark_bar().encode(
+        x = alt.X('mean(Streams):Q', scale=alt.Scale(domain=[0, 150000000]), title='Cantidad de Streams',axis=alt.Axis(labelExpr='datum.value / 1E6 + "M"')),
+        y = alt.Y('Genre1:N', sort = '-x', title='Género Musical'),
+        column = alt.Column('Ano:N', title = "")
+    ).transform_filter(
+        alt.FieldEqualPredicate(field='Ano', equal=2020)
+    ).properties(
+        width=width,
+        height=height,
+        selection = interval4
+    )
+
+    feat_b1 = alt.Chart(genres).mark_bar().encode(
+        x = alt.X('average(Valor)', scale=alt.Scale(domain=[0, 1.0]), title='Valor'),
+        y = alt.Y('Variable',title='Característica Sonora'),
+        color = 'Variable:N'
+    ).transform_filter(
+        alt.FieldEqualPredicate(field='Ano', equal=2017)
+    ).transform_filter(
+        interval1
+    ).properties(
+        width=width,
+        height=height2
+    )
+
+    feat_b2 = alt.Chart(genres).mark_bar().encode(
+        x = alt.X('average(Valor)', scale=alt.Scale(domain=[0, 1.0]),title='Valor'),
+        y = alt.Y('Variable',title='Característica Sonora'),
+        color = 'Variable:N'
+    ).transform_filter(
+        alt.FieldEqualPredicate(field='Ano', equal=2018)
+    ).transform_filter(
+        interval2
+    ).properties(
+        width=width,
+        height=height2
+    )
+
+    feat_b3 = alt.Chart(genres).mark_bar().encode(
+        x = alt.X('average(Valor)', scale=alt.Scale(domain=[0, 1.0]),title='Valor'),
+        y = alt.Y('Variable',title='Característica Sonora'),
+        color = 'Variable:N'
+    ).transform_filter(
+        alt.FieldEqualPredicate(field='Ano', equal=2019)
+    ).transform_filter(
+        interval3
+    ).properties(
+        width=width,
+        height=height2
+    )
+
+    feat_b4 = alt.Chart(genres).mark_bar().encode(
+        x = alt.X('average(Valor)', scale=alt.Scale(domain=[0, 1.0]),title='Valor'),
+        y = alt.Y('Variable',title='Característica Sonora'),
+        color = alt.Color('Variable:N',
+                            legend=alt.Legend(
+                                orient='none',
+                                legendX=450, legendY=530,
+                                direction='horizontal',
+                                titleAnchor='middle',
+                                title = '')
+        )
+    ).transform_filter(
+        alt.FieldEqualPredicate(field='Ano', equal=2020)
+    ).transform_filter(
+        interval4
+    ).properties(
+        width=width,
+        height=height2
+    )
+
+
+    g5 = alt.hconcat(alt.vconcat(b1,feat_b1), alt.vconcat(b2,feat_b2), alt.vconcat(b3,feat_b3), alt.vconcat(b4,feat_b4)).properties(
+        background = '#f9f9f9',
+        title = alt.TitleParams(text = 'Géneros Musicales más escuchados en Spotify en el tiempo', 
+                                font = 'Ubuntu Mono', 
+                                fontSize = 22, 
+                                color = '#3E454F', 
+                                subtitleFont = 'Ubuntu Mono',
+                                subtitleFontSize = 16, 
+                                subtitleColor = '#3E454F',
+                                anchor = 'middle'
+                                )
+        )
         
-        genres = genres.set_index(['Ano','Genre1','Streams'])
-        genres = genres.stack().reset_index(name = 'Valor').rename(columns={'level_3':'Variable'})
-        
-        interval1 = alt.selection_interval(encodings = ['y'])
-        interval2 = alt.selection_interval(encodings = ['y'])
-        interval3 = alt.selection_interval(encodings = ['y'])
-        interval4 = alt.selection_interval(encodings = ['y'])
-
-        width = 200
-        height = 250
-        height2 = 100
-
-        b1 = alt.Chart(genres).transform_window(
-            rank='rank(sum(Streams))',
-            sort=[alt.SortField('Streams', order='descending')]
-        ).transform_filter(
-            alt.datum.rank <= 1000
-        ).mark_bar().encode(
-            x = alt.X('mean(Streams):Q', scale=alt.Scale(domain=[0, 150000000]), title='Cantidad de Streams',axis=alt.Axis(labelExpr='datum.value / 1E6 + "M"')),
-            y = alt.Y('Genre1:N', sort = '-x', title='Género Musical'),
-            column = alt.Column('Ano:N', title = "")
-        ).transform_filter(
-            alt.FieldEqualPredicate(field='Ano', equal=2017)
-        ).properties(
-            width=width,
-            height=height,
-            selection = interval1
-        )
-
-        b2 = alt.Chart(genres).transform_window(
-            rank='rank(sum(Streams))',
-            sort=[alt.SortField('Streams', order='descending')]
-        ).transform_filter(
-            alt.datum.rank <= 1000
-        ).mark_bar().encode(
-          x = alt.X('mean(Streams):Q', scale=alt.Scale(domain=[0, 150000000]), title='Cantidad de Streams',axis=alt.Axis(labelExpr='datum.value / 1E6 + "M"')),
-            y = alt.Y('Genre1:N', sort = '-x', title='Género Musical'),
-            column = alt.Column('Ano:N', title = "")
-        ).transform_filter(
-            alt.FieldEqualPredicate(field='Ano', equal=2018)
-        ).properties(
-            width=width,
-            height=height,
-            selection = interval2
-        )
-
-        b3 = alt.Chart(genres).transform_window(
-            rank='rank(sum(Streams))',
-            sort=[alt.SortField('Streams', order='descending')]
-        ).transform_filter(
-            alt.datum.rank <= 1000
-        ).mark_bar().encode(
-            x = alt.X('mean(Streams):Q', scale=alt.Scale(domain=[0, 150000000]), title='Cantidad de Streams',axis=alt.Axis(labelExpr='datum.value / 1E6 + "M"')),
-            y = alt.Y('Genre1:N', sort = '-x', title='Género Musical'),
-            column = alt.Column('Ano:N', title = "")
-        ).transform_filter(
-            alt.FieldEqualPredicate(field='Ano', equal=2019)
-        ).properties(
-            width=width,
-            height=height,
-            selection = interval3
-        )
-
-        b4 = alt.Chart(genres).transform_window(
-            rank='rank(sum(Streams))',
-            sort=[alt.SortField('Streams', order='descending')]
-        ).transform_filter(
-            alt.datum.rank <= 1000
-        ).mark_bar().encode(
-            x = alt.X('mean(Streams):Q', scale=alt.Scale(domain=[0, 150000000]), title='Cantidad de Streams',axis=alt.Axis(labelExpr='datum.value / 1E6 + "M"')),
-            y = alt.Y('Genre1:N', sort = '-x', title='Género Musical'),
-            column = alt.Column('Ano:N', title = "")
-        ).transform_filter(
-            alt.FieldEqualPredicate(field='Ano', equal=2020)
-        ).properties(
-            width=width,
-            height=height,
-            selection = interval4
-        )
-
-        feat_b1 = alt.Chart(genres).mark_bar().encode(
-            x = alt.X('average(Valor)', scale=alt.Scale(domain=[0, 1.0]), title='Valor'),
-            y = alt.Y('Variable',title='Característica Sonora'),
-            color = 'Variable:N'
-        ).transform_filter(
-            alt.FieldEqualPredicate(field='Ano', equal=2017)
-        ).transform_filter(
-            interval1
-        ).properties(
-            width=width,
-            height=height2
-        )
-
-        feat_b2 = alt.Chart(genres).mark_bar().encode(
-            x = alt.X('average(Valor)', scale=alt.Scale(domain=[0, 1.0]),title='Valor'),
-            y = alt.Y('Variable',title='Característica Sonora'),
-            color = 'Variable:N'
-        ).transform_filter(
-            alt.FieldEqualPredicate(field='Ano', equal=2018)
-        ).transform_filter(
-            interval2
-        ).properties(
-            width=width,
-            height=height2
-        )
-
-        feat_b3 = alt.Chart(genres).mark_bar().encode(
-            x = alt.X('average(Valor)', scale=alt.Scale(domain=[0, 1.0]),title='Valor'),
-            y = alt.Y('Variable',title='Característica Sonora'),
-            color = 'Variable:N'
-        ).transform_filter(
-            alt.FieldEqualPredicate(field='Ano', equal=2019)
-        ).transform_filter(
-            interval3
-        ).properties(
-            width=width,
-            height=height2
-        )
-
-        feat_b4 = alt.Chart(genres).mark_bar().encode(
-            x = alt.X('average(Valor)', scale=alt.Scale(domain=[0, 1.0]),title='Valor'),
-            y = alt.Y('Variable',title='Característica Sonora'),
-            color = alt.Color('Variable:N',
-                                legend=alt.Legend(
-                                    orient='none',
-                                    legendX=450, legendY=530,
-                                    direction='horizontal',
-                                    titleAnchor='middle',
-                                    title = '')
-            )
-        ).transform_filter(
-            alt.FieldEqualPredicate(field='Ano', equal=2020)
-        ).transform_filter(
-            interval4
-        ).properties(
-            width=width,
-            height=height2
-        )
-
-
-        g5 = alt.hconcat(alt.vconcat(b1,feat_b1), alt.vconcat(b2,feat_b2), alt.vconcat(b3,feat_b3), alt.vconcat(b4,feat_b4)).properties(
-            background = '#f9f9f9',
-            title = alt.TitleParams(text = 'Géneros Musicales más escuchados en Spotify en el tiempo', 
-                                    font = 'Ubuntu Mono', 
-                                    fontSize = 22, 
-                                    color = '#3E454F', 
-                                    subtitleFont = 'Ubuntu Mono',
-                                    subtitleFontSize = 16, 
-                                    subtitleColor = '#3E454F',
-                                    anchor = 'middle'
-                                    )
-            )
         
         
-        
-    st.altair_chart(g5, use_container_width=True)
+        st.altair_chart(g5, use_container_width=True)
 
         
 
