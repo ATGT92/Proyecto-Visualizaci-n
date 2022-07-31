@@ -313,7 +313,7 @@ if section == "Visualizacion":
         ).transform_filter(
             alt.datum.rank <= 1000
         ).mark_bar().encode(
-            x = alt.X('mean(Streams):Q', scale=alt.Scale(domain=[0, 100000000]), title='Cantidad de Streams'),
+            x = alt.X('mean(Streams):Q', scale=alt.Scale(domain=[0, 150000000]), title='Cantidad de Streams'),
             y = alt.Y('Genre1:N', sort = '-x', title='Género Musical'),
             column = alt.Column('Ano:N', title = "")
         ).transform_filter(
@@ -330,7 +330,7 @@ if section == "Visualizacion":
         ).transform_filter(
             alt.datum.rank <= 1000
         ).mark_bar().encode(
-          x = alt.X('mean(Streams):Q', scale=alt.Scale(domain=[0, 100000000]), title='Cantidad de Streams'),
+          x = alt.X('mean(Streams):Q', scale=alt.Scale(domain=[0, 150000000]), title='Cantidad de Streams'),
             y = alt.Y('Genre1:N', sort = '-x', title='Género Musical'),
             column = alt.Column('Ano:N', title = "")
         ).transform_filter(
@@ -347,7 +347,7 @@ if section == "Visualizacion":
         ).transform_filter(
             alt.datum.rank <= 1000
         ).mark_bar().encode(
-            x = alt.X('mean(Streams):Q', scale=alt.Scale(domain=[0, 100000000]), title='Cantidad de Streams'),
+            x = alt.X('mean(Streams):Q', scale=alt.Scale(domain=[0, 150000000]), title='Cantidad de Streams'),
             y = alt.Y('Genre1:N', sort = '-x', title='Género Musical'),
             column = alt.Column('Ano:N', title = "")
         ).transform_filter(
@@ -364,7 +364,7 @@ if section == "Visualizacion":
         ).transform_filter(
             alt.datum.rank <= 1000
         ).mark_bar().encode(
-            x = alt.X('mean(Streams):Q', scale=alt.Scale(domain=[0, 100000000]), title='Cantidad de Streams'),
+            x = alt.X('mean(Streams):Q', scale=alt.Scale(domain=[0, 150000000]), title='Cantidad de Streams'),
             y = alt.Y('Genre1:N', sort = '-x', title='Género Musical'),
             column = alt.Column('Ano:N', title = "")
         ).transform_filter(
