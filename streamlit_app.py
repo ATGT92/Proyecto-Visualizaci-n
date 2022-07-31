@@ -177,9 +177,9 @@ if section == "Datos":
         st.write(country_final.head(10))
         
         
-  if "df" not in st.session_state:
-    #st.session_state["name0"] = "initial name"       
-    st.session_state["df"] = country_final    
+    if "df" not in st.session_state:
+        #st.session_state["name0"] = "initial name"       
+        st.session_state["df"] = country_final    
 
     # add the link at the bottom of each page
     st.markdown("<a href='#linkto_top'>Link to top</a>", unsafe_allow_html=True)
