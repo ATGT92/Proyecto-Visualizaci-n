@@ -176,7 +176,10 @@ if section == "Datos":
         st.write(country_final.shape)
         st.write(country_final.head(10))
         
-    st.session_state.df = country_final    
+        
+  if "df" not in st.session_state:
+    #st.session_state["name0"] = "initial name"       
+    st.session_state["df"] = country_final    
 
     # add the link at the bottom of each page
     st.markdown("<a href='#linkto_top'>Link to top</a>", unsafe_allow_html=True)
@@ -193,7 +196,7 @@ if section == "Visualizacion":
     
     with st.echo():
         df_artist_time = st.session_state.df.groupby(['Ano','Artist'], as_index=False).agg({'Streams':'mean', 'Position':'mean'})
-    
+ 
         g1 = alt.Chart(df_artist_time).mark_point().encode(
             x='Position',
             y='Streams',
