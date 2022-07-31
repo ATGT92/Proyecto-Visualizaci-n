@@ -466,7 +466,7 @@ if section == "Visualizacion":
     selection = alt.selection_multi(fields=['Genre'])
     color = alt.condition(selection,
                           alt.Color('Genre:N', legend=None,scale=alt.Scale(scheme='category10')),
-                          alt.value('lightgray'),
+                          alt.value('lightgray')
                          )
 
     g6 = alt.Chart(genre).mark_point(filled = True, size = 50).encode(
