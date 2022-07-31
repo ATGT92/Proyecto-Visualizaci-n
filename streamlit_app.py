@@ -480,7 +480,7 @@ if section == "Visualizacion":
         row = 'Ano:N',
         tooltip = 'Artist:N'
     ).properties(
-            width=100,
+            width=250,
             height=120
     )
     
