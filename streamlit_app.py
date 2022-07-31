@@ -254,13 +254,24 @@ if section == "Visualizacion":
         )
 
         bar = alt.Chart(streams).mark_bar().encode(
-            x = alt.X('average(Valor)', scale=alt.Scale(domain=[0, 1.0])),
-            y = 'Variable'
+            x = alt.X('mean(Valor)', scale=alt.Scale(domain=[0, 1.0]), title = 'Valor'),
+            y = alt.Y('Variable',title='Característica Sonora')
         ).transform_filter(
             interval
         )
 
         g4 = alt.vconcat(scatter,bar)
+        g4.properties(background = '#f9f9f9',
+                    title = alt.TitleParams(text = 'Comportamiento de Streams vs Posición en el Ranking Spotify por año', 
+                                            font = 'Ubuntu Mono', 
+                                            fontSize = 22, 
+                                            color = '#3E454F', 
+                                            subtitleFont = 'Ubuntu Mono',
+                                            subtitleFontSize = 16, 
+                                            subtitleColor = '#3E454F',
+                                            anchor = 'middle'
+                                            )
+                    )
         
     st.altair_chart(g4, use_container_width=True)
         
