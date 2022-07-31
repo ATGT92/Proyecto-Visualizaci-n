@@ -260,8 +260,8 @@ if section == "Visualizacion":
             interval
         )
 
-        g4 = alt.vconcat(scatter,bar)
-        properties = alt.properties(background = '#f9f9f9',
+        g4 = alt.vconcat(scatter,bar).properties(
+                    background = '#f9f9f9',
                     title = alt.TitleParams(text = 'Comportamiento de Streams vs Posición en el Ranking Spotify por año', 
                                             font = 'Ubuntu Mono', 
                                             fontSize = 22, 
