@@ -202,16 +202,16 @@ if section == "Visualizacion":
         y='Streams',
         color='Ano:N'
     ).properties(
-    background = '#f9f9f9',
-    title = alt.TitleParams(text = 'Popularidad vs.Streams', 
-                            font = 'Ubuntu Mono', 
-                            fontSize = 22, 
-                            color = '#3E454F', 
-                            subtitleFont = 'Ubuntu Mono',
-                            subtitleFontSize = 16, 
-                            subtitleColor = '#3E454F',
-                            anchor = 'middle'
-                            ).interactive()
+        background = '#f9f9f9',
+        title = alt.TitleParams(text = 'Popularidad vs.Streams', 
+                                font = 'Ubuntu Mono', 
+                                fontSize = 22, 
+                                color = '#3E454F', 
+                                subtitleFont = 'Ubuntu Mono',
+                                subtitleFontSize = 16, 
+                                subtitleColor = '#3E454F',
+                                anchor = 'middle'
+        ).interactive()
 
     st.altair_chart(g1, use_container_width=True)
     
@@ -229,16 +229,16 @@ if section == "Visualizacion":
         y='Streams:Q',
         color = 'Ano:N'
     ).properties(
-    background = '#f9f9f9',
-    title = alt.TitleParams(text = 'Aristas más escuchados', 
-                            font = 'Ubuntu Mono', 
-                            fontSize = 22, 
-                            color = '#3E454F', 
-                            subtitleFont = 'Ubuntu Mono',
-                            subtitleFontSize = 16, 
-                            subtitleColor = '#3E454F',
-                            anchor = 'middle'
-                            )
+        background = '#f9f9f9',
+        title = alt.TitleParams(text = 'Aristas más escuchados', 
+        font = 'Ubuntu Mono', 
+        fontSize = 22, 
+        color = '#3E454F', 
+        subtitleFont = 'Ubuntu Mono',
+        subtitleFontSize = 16, 
+        subtitleColor = '#3E454F',
+        anchor = 'middle'
+        )
     ).interactive()
 
     st.altair_chart(g2, use_container_width=True)
@@ -261,16 +261,16 @@ if section == "Visualizacion":
         width=250,
         height=120
     ).properties(
-    background = '#f9f9f9',
-    title = alt.TitleParams(text = 'Distribución de propiedades sonoras', 
-                            font = 'Ubuntu Mono', 
-                            fontSize = 22, 
-                            color = '#3E454F', 
-                            subtitleFont = 'Ubuntu Mono',
-                            subtitleFontSize = 16, 
-                            subtitleColor = '#3E454F',
-                            anchor = 'middle'
-                            )
+        background = '#f9f9f9',
+        title = alt.TitleParams(text = 'Distribución de propiedades sonoras', 
+                                font = 'Ubuntu Mono', 
+                                fontSize = 22, 
+                                color = '#3E454F', 
+                                subtitleFont = 'Ubuntu Mono',
+                                subtitleFontSize = 16, 
+                                subtitleColor = '#3E454F',
+                                anchor = 'middle'
+        )
     )
     
     st.altair_chart(g3, use_container_width=True)
