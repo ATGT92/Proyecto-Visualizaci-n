@@ -29,14 +29,14 @@ if section == "Introduccion":
               la aplicación a través de su API.')
     
     
-    st.markdown('A continuación se describen las principales características sonoras de una canción bajo el modelo de Spotify:
-                - **Danceability:** describe cuan adecuada es una canción para bailar basado en la combinación de elementos musicales como el ritmo. Un valor de 0 es poco bailable y un valor de 1 es muy bailable.
-                - **Energy:** es una medida de la percepción de cuan intensa es una canción en términos de ruido, potencia, etc. Un valor de 0 está asociado a intensidad baja mientras que 1 a intensidad alta.
-                - **Speechiness:** detecta la presencia de palabras habladas en un audio. Valores más cercanos a 1 denotan audios con presencia exclusiva de conversaciones.
-                - **Acousticness:** medida de si una canción o audio es acústico. Valores cercanos a 1 denotan alta confianza en que el audio sea acústico mientras que valores cercano a 0 denotan su ausencia.
-                - **Instrumentalness:** predice si una canción o audio tiene vocalización. Sonidos como "Ooh" o "Aah" son tratados como instrumentales. Valores cercanos a 1 denotan audios posiblemente sin la presencia de vocalización. Por ejemplo el rap debiese tener un valor de instrumentalness cercano a 0.
-                - **Liveness:** detecta la presencia de una audiencia en la grabación. Valores altos de liveness representan alta probabilidad que el audio fue grabado en un concierto.
-             ')
+    """A continuación se describen las principales características sonoras de una canción bajo el modelo de Spotify:
+    * **Danceability:** describe cuan adecuada es una canción para bailar basado en la combinación de elementos musicales como el ritmo. Un valor de 0 es poco bailable y un valor de 1 es muy bailable.
+    * **Energy:** es una medida de la percepción de cuan intensa es una canción en términos de ruido, potencia, etc. Un valor de 0 está asociado a intensidad baja mientras que 1 a intensidad alta.
+    * **Speechiness:** detecta la presencia de palabras habladas en un audio. Valores más cercanos a 1 denotan audios con presencia exclusiva de conversaciones.
+    * **Acousticness:** medida de si una canción o audio es acústico. Valores cercanos a 1 denotan alta confianza en que el audio sea acústico mientras que valores cercano a 0 denotan su ausencia.
+    * **Instrumentalness:** predice si una canción o audio tiene vocalización. Sonidos como "Ooh" o "Aah" son tratados como instrumentales. Valores cercanos a 1 denotan audios posiblemente sin la presencia de vocalización. Por ejemplo el rap debiese tener un valor de instrumentalness cercano a 0.
+    * **Liveness:** detecta la presencia de una audiencia en la grabación. Valores altos de liveness representan alta probabilidad que el audio fue grabado en un concierto.
+    """
 
     st.markdown("<a href='#linkto_top'>Link to top</a>", unsafe_allow_html=True)
 
