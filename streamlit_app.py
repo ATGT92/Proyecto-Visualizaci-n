@@ -30,7 +30,7 @@ if section == "Introduccion":
     
     
     """
-    ### Markdown
+    ### Propiedades Acústicas
     A continuación se describen las principales características sonoras de una canción bajo el modelo de Spotify:
     - **Danceability:** describe cuan adecuada es una canción para bailar basado en la combinación de elementos musicales como el ritmo. Un valor de 0 es poco bailable y un valor de 1 es muy bailable.
     - **Energy:** es una medida de la percepción de cuan intensa es una canción en términos de ruido, potencia, etc. Un valor de 0 está asociado a intensidad baja mientras que 1 a intensidad alta.
@@ -47,6 +47,13 @@ if section == "Datos":
 
     st.write('En esta sección se muestran los datos con los que se trabajarán y las transformaciones para llegar al dataset final. Los datos se obtuvieron de la\
     platafoma Kaggel y consisten en dato sobre los rankings semanales de canciones (charts), artistas y canciones.')
+    
+    """
+    ### Consideraciones
+    Es importante resaltar que los tres datasets utilizados solo constituyen una muestra de los datos originales y que no se pudieron cargar completamente en github
+    para su uso. Cada muestra de cada dataset se extrajo tal que después al cruzarlos no se pierde información.
+    
+    """
 
     st.markdown('**- Charts:** contiene el ranking semanal de las 200 canciones más populares en Spotify')
 
@@ -289,9 +296,12 @@ if section == "Visualizacion":
     st.altair_chart(g3, use_container_width=True)
     
     st.subheader('Comportamiento de Streams vs. Popularidad en Spotify')
-    st.write('Una pregunta natural que surge es si la posición en el chart de Spotify se correlaciona con la cantidad de streams que tiene el artista. La\
-    respuesta a esto es que si como muestra el siguiente gráfico interactivo. En todos los años analizados se observa que a mejor ranking en el chart se\
-    condice con una mayor cantidad promedio de streams por artista. Es un resultado esperado pero interesante de corroborar con los datos.')
+    st.write('El siguiente gráfico es interactivo. Se puede seleccionar un área del gráfico superior de Streams vs. Popularidad y ver como cambian las características\
+             sonoras propmedio de los artistas pertenencientes al área de selección. Es importante notar que el comportamiento de la curva de Streams vs. Popularidad \
+             se puede asociar a una ley potencia tal que muy pocos artistas condensan la gran mayoría de reproducciones. Esto no cambia en el tiempo. Al ver las\
+             características (mover selección) desde los más populares a los menos populares, se puede notar que en promedio **danceability** y **energy** alcanzan valores\
+             más altos a medida que nos movemos a posiciones más altas en el ranking. Esto quiere decir que podemos asociar la popularidad a artistas y canciones con un\
+             mood positivo que haga sentir a la gente más contenta talvez.')
     
     #with st.echo():
     streams = st.session_state.df[['Ano','Position','Streams','danceability','energy','speechiness','acousticness','instrumentalness','liveness','valence']].groupby(['Ano','Position']).mean().reset_index()
@@ -332,9 +342,11 @@ if section == "Visualizacion":
     st.altair_chart(g4, use_container_width=True)
     
     st.subheader('Géneros Musicales más escuchados en Spotify en el tiempo')
-    st.write('Una pregunta natural que surge es si la posición en el chart de Spotify se correlaciona con la cantidad de streams que tiene el artista. La\
-    respuesta a esto es que si como muestra el siguiente gráfico interactivo. En todos los años analizados se observa que a mejor ranking en el chart se\
-    condice con una mayor cantidad promedio de streams por artista. Es un resultado esperado pero interesante de corroborar con los datos.')
+    st.write('Este es un gráfico dinámico: se muestran los géneros musicales con mas reproducciones a lo largo del tiempo analizado y es posible ver las características\
+    sonoras promedio de uno o un conjunto de ellos. Es interesante notar, que de la muestra tomada, los géneros más populares en EEUU son **pop**, **rap** o **hip hop**. Esto\
+    hace sentido al tomar en cuenta la cultura musical de ese país, donde el desarrollo de dichos géneros ha sido muy relevante desde la década del 80. Un resultado esperado también\
+    es que los atributos más importantes de estos géneros son precisamente **danceability** y **energy**, ya que están asociados a beats sonoros fuertes que tienden a generar un\
+    mood positivo en la gente.')
     
     #with st.echo():
     genres = st.session_state.df[['Ano',
@@ -514,9 +526,11 @@ if section == "Visualizacion":
     st.altair_chart(g5, use_container_width=True)
         
     st.subheader('Aristas más populares de Spotify por tipo de género')
-    st.write('Una pregunta natural que surge es si la posición en el chart de Spotify se correlaciona con la cantidad de streams que tiene el artista. La\
-    respuesta a esto es que si como muestra el siguiente gráfico interactivo. En todos los años analizados se observa que a mejor ranking en el chart se\
-    condice con una mayor cantidad promedio de streams por artista. Es un resultado esperado pero interesante de corroborar con los datos.')
+    st.write('Este también es un gráfico interactivo donde se muestra la relación entre reproducciones y posiciones en el ranking de los diferentes artistas\
+    agrupados por género musical. En general no se observa una diferencia en los años y los distintos géneros no muestran un patrón que indique que el género del tipo A\
+    esté mejor ubicado en el ranking que el género B. Solo se ratifica la conclusión sobre que los géneros más populares son rock, pop y hip hop. Es posible marcar cada\
+    género para aislar a los artistas que lo componen. Al pasar el mouse por cada punto obtiene el nombre del arista asociado. Algunos tienden a repetirse en las mejores\
+    posiciones como Mariah Carey, CardiB, Drake, Post Malone.')
 
     genre = st.session_state.df[['Ano','Artist','Genre1','Position','Streams']].groupby(['Ano','Artist','Genre1']).agg({'Position':'mean','Streams':'sum'}).reset_index()
     genre = genre[genre['Ano'] <= 2020]
