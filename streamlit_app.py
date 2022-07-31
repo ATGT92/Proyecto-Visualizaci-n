@@ -238,7 +238,7 @@ if section == "Visualizacion":
     st.altair_chart(g3, use_container_width=True)
     
     with st.echo():
-        streams = country_final[['Ano','Position','Streams','danceability','energy','speechiness','acousticness','instrumentalness','liveness','valence']].groupby(['Ano','Position']).mean().reset_index()
+        streams = st.session_state.df[['Ano','Position','Streams','danceability','energy','speechiness','acousticness','instrumentalness','liveness','valence']].groupby(['Ano','Position']).mean().reset_index()
         streams = streams.set_index(['Ano','Position','Streams'])
         streams = streams.stack().reset_index(name = 'Valor').rename(columns={'level_3':'Variable'})
         
