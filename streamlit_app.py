@@ -479,6 +479,9 @@ if section == "Visualizacion":
         color = color,
         row = 'Ano:N',
         tooltip = 'Artist:N'
+    ).properties(
+            width=100,
+            height=120
     )
     
     legend = alt.Chart(genre).mark_point().encode(
@@ -500,10 +503,7 @@ if section == "Visualizacion":
                                 subtitleColor = '#3E454F',
                                 anchor = 'middle'
                                 )
-        ).properties(
-            width=100,
-            height=120
-    )
+        )
     
     st.altair_chart(g6, use_container_width=True)
 
