@@ -194,15 +194,25 @@ if section == "Visualizacion":
     respuesta a esto es que si como muestra el siguiente gráfico interactivo. En todos los años analizados se observa que a mejor ranking en el chart se\
     condice con una mayor cantidad promedio de streams por artista. Es un resultado esperado pero interesante de corroborar con los datos.')
     
-    with st.echo():
-        df_artist_time = st.session_state.df.groupby(['Ano','Artist'], as_index=False).agg({'Streams':'mean', 'Position':'mean'})
- 
-        g1 = alt.Chart(df_artist_time).mark_point().encode(
-            x='Position',
-            y='Streams',
-            color='Ano:N'
-        ).interactive()
-   
+    #with st.echo():
+    df_artist_time = st.session_state.df.groupby(['Ano','Artist'], as_index=False).agg({'Streams':'mean', 'Position':'mean'})
+
+    g1 = alt.Chart(df_artist_time).mark_point().encode(
+        x='Position',
+        y='Streams',
+        color='Ano:N'
+    ).properties(
+    background = '#f9f9f9',
+    title = alt.TitleParams(text = 'Popularidad vs.Streams', 
+                            font = 'Ubuntu Mono', 
+                            fontSize = 22, 
+                            color = '#3E454F', 
+                            subtitleFont = 'Ubuntu Mono',
+                            subtitleFontSize = 16, 
+                            subtitleColor = '#3E454F',
+                            anchor = 'middle'
+                            ).interactive()
+
     st.altair_chart(g1, use_container_width=True)
     
     
@@ -210,15 +220,26 @@ if section == "Visualizacion":
     st.write('En esta sección se muestran los artistas más escuchados - en términos de streams - de EEUU en Spotify. Los más populares son Post Malone XXXTentation y Drake.\
     En general estos artistas tienen una cantidad de streams invariante en el tiempo, lo que quiere decir que se tienden a repetir año tras año')
   
-    with st.echo():
-        artist_popular = st.session_state.df.groupby(['Ano','Artist'], as_index=False).agg({'Streams':'sum'})
-        artist_popular = artist_popular.sort_values(['Ano', 'Streams'], ascending=False).groupby(['Ano']).head(20)
+    #with st.echo():
+    artist_popular = st.session_state.df.groupby(['Ano','Artist'], as_index=False).agg({'Streams':'sum'})
+    artist_popular = artist_popular.sort_values(['Ano', 'Streams'], ascending=False).groupby(['Ano']).head(20)
 
-        g2 = alt.Chart(artist_popular).mark_circle().encode(
-            alt.X('Artist', sort=alt.EncodingSortField(field="Streams", op="sum", order='descending')),
-            y='Streams:Q',
-            color = 'Ano:N'
-        ).interactive()
+    g2 = alt.Chart(artist_popular).mark_circle().encode(
+        alt.X('Artist', sort=alt.EncodingSortField(field="Streams", op="sum", order='descending')),
+        y='Streams:Q',
+        color = 'Ano:N'
+    ).properties(
+    background = '#f9f9f9',
+    title = alt.TitleParams(text = 'Aristas más escuchados', 
+                            font = 'Ubuntu Mono', 
+                            fontSize = 22, 
+                            color = '#3E454F', 
+                            subtitleFont = 'Ubuntu Mono',
+                            subtitleFontSize = 16, 
+                            subtitleColor = '#3E454F',
+                            anchor = 'middle'
+                            )
+    ).interactive()
 
     st.altair_chart(g2, use_container_width=True)
     
@@ -229,54 +250,78 @@ if section == "Visualizacion":
     **acousticness**, donde el primero tiende a bajar en el tiempo (las canciones más populares tienden a bajar su característica de bailables) y la segunda sube en el tiempo\
     (las canciones más populares tienden a ser más acústicas).')
 
-    with st.echo():
-        sonido = st.session_state.df[['Ano','Position','danceability','energy','loudness','speechiness','acousticness','instrumentalness','liveness','valence']].groupby(['Ano','Position'], as_index=False).mean()
+    #with st.echo():
+    sonido = st.session_state.df[['Ano','Position','danceability','energy','loudness','speechiness','acousticness','instrumentalness','liveness','valence']].groupby(['Ano','Position'], as_index=False).mean()
 
-        g3 = alt.Chart(sonido).transform_fold(['danceability','energy','speechiness','acousticness','instrumentalness','liveness','valence'], as_=['key', 'value']).mark_boxplot(
-        ).encode(x='Ano:N',
-                 y='value:Q',
-                 row = 'key:N'
-                )
+    g3 = alt.Chart(sonido).transform_fold(['danceability','energy','speechiness','acousticness','instrumentalness','liveness','valence'], as_=['key', 'value']).mark_boxplot(
+    ).encode(x='Ano:N',
+             y='value:Q',
+             row = 'key:N'
+            ).properties(
+        width=250,
+        height=120
+    ).properties(
+    background = '#f9f9f9',
+    title = alt.TitleParams(text = 'Distribución de propiedades sonoras', 
+                            font = 'Ubuntu Mono', 
+                            fontSize = 22, 
+                            color = '#3E454F', 
+                            subtitleFont = 'Ubuntu Mono',
+                            subtitleFontSize = 16, 
+                            subtitleColor = '#3E454F',
+                            anchor = 'middle'
+                            )
+    )
     
     st.altair_chart(g3, use_container_width=True)
     
-    with st.echo():
-        streams = st.session_state.df[['Ano','Position','Streams','danceability','energy','speechiness','acousticness','instrumentalness','liveness','valence']].groupby(['Ano','Position']).mean().reset_index()
-        streams = streams.set_index(['Ano','Position','Streams'])
-        streams = streams.stack().reset_index(name = 'Valor').rename(columns={'level_3':'Variable'})
-        
-        interval = alt.selection_interval()
+    st.subheader('Comportamiento de Streams vs. Popularidad en Spotify')
+    st.write('Una pregunta natural que surge es si la posición en el chart de Spotify se correlaciona con la cantidad de streams que tiene el artista. La\
+    respuesta a esto es que si como muestra el siguiente gráfico interactivo. En todos los años analizados se observa que a mejor ranking en el chart se\
+    condice con una mayor cantidad promedio de streams por artista. Es un resultado esperado pero interesante de corroborar con los datos.')
+    
+    #with st.echo():
+    streams = st.session_state.df[['Ano','Position','Streams','danceability','energy','speechiness','acousticness','instrumentalness','liveness','valence']].groupby(['Ano','Position']).mean().reset_index()
+    streams = streams.set_index(['Ano','Position','Streams'])
+    streams = streams.stack().reset_index(name = 'Valor').rename(columns={'level_3':'Variable'})
 
-        scatter = alt.Chart(streams).mark_line(filled=False).encode(
-            x = 'Position',
-            y = 'Streams',
-            color = alt.Color('Ano:N', scale=alt.Scale(range=['red','blue','lightgreen','black'])),
-            size=alt.Size(scale=alt.Scale(zero=False))
-        ).properties(
-            selection = interval
-        )
+    interval = alt.selection_interval()
 
-        bar = alt.Chart(streams).mark_bar().encode(
-            x = alt.X('mean(Valor)', scale=alt.Scale(domain=[0, 1.0]), title = 'Valor'),
-            y = alt.Y('Variable',title='Característica Sonora')
-        ).transform_filter(
-            interval
-        )
+    scatter = alt.Chart(streams).mark_line(filled=False).encode(
+        x = 'Position',
+        y = 'Streams',
+        color = alt.Color('Ano:N', scale=alt.Scale(range=['red','blue','lightgreen','black'])),
+        size=alt.Size(scale=alt.Scale(zero=False))
+    ).properties(
+        selection = interval
+    )
 
-        g4 = alt.vconcat(scatter,bar).properties(
-                    background = '#f9f9f9',
-                    title = alt.TitleParams(text = 'Comportamiento de Streams vs Posición en el Ranking Spotify por año', 
-                                            font = 'Ubuntu Mono', 
-                                            fontSize = 22, 
-                                            color = '#3E454F', 
-                                            subtitleFont = 'Ubuntu Mono',
-                                            subtitleFontSize = 16, 
-                                            subtitleColor = '#3E454F',
-                                            anchor = 'middle'
-                                            )
-                    )
+    bar = alt.Chart(streams).mark_bar().encode(
+        x = alt.X('mean(Valor)', scale=alt.Scale(domain=[0, 1.0]), title = 'Valor'),
+        y = alt.Y('Variable',title='Característica Sonora')
+    ).transform_filter(
+        interval
+    )
+
+    g4 = alt.vconcat(scatter,bar).properties(
+                background = '#f9f9f9',
+                title = alt.TitleParams(text = 'Comportamiento de Streams vs Posición en el Ranking Spotify por año', 
+                                        font = 'Ubuntu Mono', 
+                                        fontSize = 22, 
+                                        color = '#3E454F', 
+                                        subtitleFont = 'Ubuntu Mono',
+                                        subtitleFontSize = 16, 
+                                        subtitleColor = '#3E454F',
+                                        anchor = 'middle'
+                                        )
+                )
         
     st.altair_chart(g4, use_container_width=True)
+    
+    st.subheader('Géneros Musicales más escuchados en Spotify en el tiempo')
+    st.write('Una pregunta natural que surge es si la posición en el chart de Spotify se correlaciona con la cantidad de streams que tiene el artista. La\
+    respuesta a esto es que si como muestra el siguiente gráfico interactivo. En todos los años analizados se observa que a mejor ranking en el chart se\
+    condice con una mayor cantidad promedio de streams por artista. Es un resultado esperado pero interesante de corroborar con los datos.')
     
     #with st.echo():
     genres = st.session_state.df[['Ano',
@@ -454,6 +499,11 @@ if section == "Visualizacion":
         
         
     st.altair_chart(g5, use_container_width=True)
+        
+    st.subheader('Aristas más populares de Spotify por tipo de género')
+    st.write('Una pregunta natural que surge es si la posición en el chart de Spotify se correlaciona con la cantidad de streams que tiene el artista. La\
+    respuesta a esto es que si como muestra el siguiente gráfico interactivo. En todos los años analizados se observa que a mejor ranking en el chart se\
+    condice con una mayor cantidad promedio de streams por artista. Es un resultado esperado pero interesante de corroborar con los datos.')
 
     genre = st.session_state.df[['Ano','Artist','Genre1','Position','Streams']].groupby(['Ano','Artist','Genre1']).agg({'Position':'mean','Streams':'sum'}).reset_index()
     genre = genre[genre['Ano'] <= 2020]
@@ -494,7 +544,7 @@ if section == "Visualizacion":
     
     g6 = alt.hconcat(g6, legend).properties(
         background = '#f9f9f9',
-        title = alt.TitleParams(text = 'Géneros Musicales más escuchados en Spotify en el tiempo', 
+        title = alt.TitleParams(text = 'Aristas más populares de Spotify por tipo de género', 
                                 font = 'Ubuntu Mono', 
                                 fontSize = 22, 
                                 color = '#3E454F', 
