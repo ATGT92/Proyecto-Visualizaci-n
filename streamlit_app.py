@@ -485,22 +485,7 @@ if section == "Visualizacion":
         selection
     )
     
-    g6 = alt.hconcat(g6, legend).properties(
-        width = 50,
-        height = 120
-    ).properties(
-        background = '#f9f9f9',
-        title = alt.TitleParams(text = 'Géneros Musicales más escuchados en Spotify en el tiempo', 
-                                font = 'Ubuntu Mono', 
-                                fontSize = 22, 
-                                color = '#3E454F', 
-                                subtitleFont = 'Ubuntu Mono',
-                                subtitleFontSize = 16, 
-                                subtitleColor = '#3E454F',
-                                anchor = 'middle'
-                                )
-        )
-    
+    g6 = alt.hconcat(g6, legend)
     st.altair_chart(g6, use_container_width=True)
 
     st.markdown("<a href='#linkto_top'>Link to top</a>", unsafe_allow_html=True)
