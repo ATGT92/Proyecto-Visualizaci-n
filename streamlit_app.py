@@ -485,7 +485,7 @@ if section == "Visualizacion":
         selection
     )
     
-    g6 = alt.hconcat(g6, legend)..properties(
+    g6 = alt.hconcat(g6, legend).properties(
         width = 50,
         height = 120
     ).properties(
