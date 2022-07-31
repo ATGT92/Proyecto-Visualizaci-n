@@ -275,7 +275,7 @@ if section == "Visualizacion":
         
     st.altair_chart(g4, use_container_width=True)
     
-    with st.echo():
+    #with st.echo():
         genres = st.session_state.df[['Ano',
                                 'Genre1',
                                 'Streams',
