@@ -473,7 +473,8 @@ if section == "Visualizacion":
         tooltip = 'Artist'
     ).properties(
         width = 50,
-        height = 300,
+        height = 300
+    ).properties(
         background = '#f9f9f9',
         title = alt.TitleParams(text = 'Géneros Musicales más escuchados en Spotify en el tiempo', 
                                 font = 'Ubuntu Mono', 
