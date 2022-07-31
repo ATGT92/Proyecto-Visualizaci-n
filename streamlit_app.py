@@ -500,7 +500,11 @@ if section == "Visualizacion":
                                 subtitleColor = '#3E454F',
                                 anchor = 'middle'
                                 )
-        )
+        ).properties(
+            width=100,
+            height=120
+    )
+    
     st.altair_chart(g6, use_container_width=True)
 
     st.markdown("<a href='#linkto_top'>Link to top</a>", unsafe_allow_html=True)
