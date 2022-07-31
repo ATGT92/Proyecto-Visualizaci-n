@@ -172,12 +172,11 @@ if section == "Datos":
 
     st.write('Renombramos algunas columnas')
     with st.echo():
-        #@st.cache()
         country_final = country_final.rename(columns = {'Song_x':'Song','Artist_x':'Artist'})
         st.write(country_final.shape)
         st.write(country_final.head(10))
         
-    st.session_state.df = country_final
+    st.session_state.df = country_final    
 
     # add the link at the bottom of each page
     st.markdown("<a href='#linkto_top'>Link to top</a>", unsafe_allow_html=True)
@@ -237,5 +236,31 @@ if section == "Visualizacion":
                 )
     
     st.altair_chart(g3, use_container_width=True)
+    
+    with st.echo():
+        streams = country_final[['Ano','Position','Streams','danceability','energy','speechiness','acousticness','instrumentalness','liveness','valence']].groupby(['Ano','Position']).mean().reset_index()
+        streams = streams.set_index(['Ano','Position','Streams'])
+        streams = streams.stack().reset_index(name = 'Valor').rename(columns={'level_3':'Variable'})
+        
+        interval = alt.selection_interval()
+
+        scatter = alt.Chart(streams).mark_line(filled=False).encode(
+            x = 'Position',
+            y = 'Streams',
+            color = alt.Color('Ano:N', scale=alt.Scale(range=['red','blue','lightgreen','black'])),
+            size=alt.Size(scale=alt.Scale(zero=False))
+        ).properties(
+            selection = interval
+        )
+
+        bar = alt.Chart(streams).mark_bar().encode(
+            x = alt.X('average(Valor)', scale=alt.Scale(domain=[0, 1.0])),
+            y = 'Variable'
+        ).transform_filter(
+            interval
+        )
+
+        alt.vconcat(scatter,bar)
+        
 
     st.markdown("<a href='#linkto_top'>Link to top</a>", unsafe_allow_html=True)
