@@ -194,24 +194,25 @@ if section == "Visualizacion":
     respuesta a esto es que si como muestra el siguiente gráfico interactivo. En todos los años analizados se observa que a mejor ranking en el chart se\
     condice con una mayor cantidad promedio de streams por artista. Es un resultado esperado pero interesante de corroborar con los datos.')
     
-        #with st.echo():
-        df_artist_time = st.session_state.df.groupby(['Ano','Artist'], as_index=False).agg({'Streams':'mean', 'Position':'mean'})
+    #with st.echo():
+    df_artist_time = st.session_state.df.groupby(['Ano','Artist'], as_index=False).agg({'Streams':'mean', 'Position':'mean'})
 
-        g1 = alt.Chart(df_artist_time).mark_point().encode(
-            x='Position',
-            y='Streams',
-            color='Ano:N'
-        ).properties(
-            background = '#f9f9f9',
-            title = alt.TitleParams(text = 'Popularidad vs.Streams', 
-                                    font = 'Ubuntu Mono', 
-                                    fontSize = 22, 
-                                    color = '#3E454F', 
-                                    subtitleFont = 'Ubuntu Mono',
-                                    subtitleFontSize = 16, 
-                                    subtitleColor = '#3E454F',
-                                    anchor = 'middle'
-            ).interactive()
+    g1 = alt.Chart(df_artist_time).mark_point().encode(
+        x='Position',
+        y='Streams',
+        color='Ano:N'
+    ).properties(
+        background = '#f9f9f9',
+        title = alt.TitleParams(text = 'Popularidad vs.Streams', 
+                                font = 'Ubuntu Mono', 
+                                fontSize = 22, 
+                                color = '#3E454F', 
+                                subtitleFont = 'Ubuntu Mono',
+                                subtitleFontSize = 16, 
+                                subtitleColor = '#3E454F',
+                                anchor = 'middle'
+                               )
+    ).interactive()
 
     st.altair_chart(g1, use_container_width=True)
     
