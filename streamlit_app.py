@@ -476,7 +476,16 @@ if section == "Visualizacion":
         color = color,
         row = 'Ano:N',
         tooltip = 'Artist'
-    ).properties(
+    )
+    
+    legend = alt.Chart(genre).mark_point().encode(
+        y=alt.Y('Genre:N', axis=alt.Axis(orient='right')),
+        color=color
+    ).add_selection(
+        selection
+    )
+    
+    g6 = alt.hconcat(g6, legend)..properties(
         width = 50,
         height = 120
     ).properties(
@@ -492,13 +501,6 @@ if section == "Visualizacion":
                                 )
         )
     
-    legend = alt.Chart(genre).mark_point().encode(
-        y=alt.Y('Genre:N', axis=alt.Axis(orient='right')),
-        color=color
-    ).add_selection(
-        selection
-    )
-    
-    st.altair_chart(g6 | legend, use_container_width=True)
+    st.altair_chart(g6 use_container_width=True)
 
     st.markdown("<a href='#linkto_top'>Link to top</a>", unsafe_allow_html=True)
