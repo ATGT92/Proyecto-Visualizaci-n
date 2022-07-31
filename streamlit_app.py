@@ -469,11 +469,11 @@ if section == "Visualizacion":
         x = alt.X('Position:Q',axis=alt.Axis(tickCount=3)),
         y = alt.Y('Streams:Q', scale = alt.Scale(type = 'log'),axis=alt.Axis(tickCount=2)),
         color = alt.Color('Genre', scale=alt.Scale(scheme='category10')),
-        column = 'Ano:N',
+        row = 'Ano:N',
         tooltip = 'Artist'
     ).properties(
         width = 50,
-        height = 100
+        height = 120
     ).properties(
         background = '#f9f9f9',
         title = alt.TitleParams(text = 'Géneros Musicales más escuchados en Spotify en el tiempo', 
