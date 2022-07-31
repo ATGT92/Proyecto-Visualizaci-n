@@ -452,6 +452,42 @@ if section == "Visualizacion":
         
     st.altair_chart(g5, use_container_width=True)
 
-        
+    genre = st.session_state.df[['Ano','Artist','Genre1','Position','Streams']].groupby(['Ano','Artist','Genre1']).agg({'Position':'mean','Streams':'sum'}).reset_index()
+    genre = genre[genre['Ano'] <= 2020]
+    genre['Genre'] = genre.Genre1
+    genre.loc[genre['Genre'].str.contains('rap'), 'Genre'] = 'hip hop/rap'
+    genre.loc[genre['Genre'].str.contains('hip hop'), 'Genre'] = 'hip hop/rap'
+    genre.loc[genre['Genre'].str.contains('rock'), 'Genre'] = 'rock'
+    genre.loc[genre['Genre'].str.contains('pop'), 'Genre'] = 'pop'
+    genre.loc[genre['Genre'].str.contains('electro'), 'Genre'] = 'electro/dance'
+    genre.loc[genre['Genre'].str.contains('dance'), 'Genre'] = 'electro/dance'
+    genre.loc[~genre['Genre'].isin(['electro/dance','hip hop/rap','rock','pop','electro','punk','funk','dance','country','soul','metal']), 'Genre'] = 'otro'
+    
+    multi = alt.selection_single(on='mouseover', nearest=True)
+
+    g6 = alt.Chart(genre).mark_point(filled = True, size = 50).encode(
+        x = alt.X('Position:Q',axis=alt.Axis(tickCount=3)),
+        y = alt.Y('Streams:Q', scale = alt.Scale(type = 'log'),axis=alt.Axis(tickCount=2)),
+        color = alt.Color('Genre', scale=alt.Scale(scheme='category10')),
+        column = 'Ano:N',
+        tooltip = 'Artist'
+    ).properties(
+        width = 350,
+        height = 300,
+        background = '#f9f9f9',
+        title = alt.TitleParams(text = 'Géneros Musicales más escuchados en Spotify en el tiempo', 
+                                font = 'Ubuntu Mono', 
+                                fontSize = 22, 
+                                color = '#3E454F', 
+                                subtitleFont = 'Ubuntu Mono',
+                                subtitleFontSize = 16, 
+                                subtitleColor = '#3E454F',
+                                anchor = 'middle'
+                                )
+        ).add_selection(
+        multi
+    )
+    
+    st.altair_chart(g6, use_container_width=True)
 
     st.markdown("<a href='#linkto_top'>Link to top</a>", unsafe_allow_html=True)
