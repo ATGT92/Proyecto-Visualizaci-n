@@ -475,7 +475,7 @@ if section == "Visualizacion":
         #color = alt.Color('Genre', scale=alt.Scale(scheme='category10')),
         color = color,
         row = 'Ano:N',
-        tooltip = 'Artist'
+        tooltip = 'Artist:N'
     )
     
     legend = alt.Chart(genre).mark_point().encode(
