@@ -463,12 +463,17 @@ if section == "Visualizacion":
     genre.loc[genre['Genre'].str.contains('dance'), 'Genre'] = 'electro/dance'
     genre.loc[~genre['Genre'].isin(['electro/dance','hip hop/rap','rock','pop','electro','punk','funk','dance','country','soul','metal']), 'Genre'] = 'otro'
     
-    multi = alt.selection_single(on='mouseover', nearest=True)
+    selection = alt.selection_multi(fields=['Genre'])
+    color = alt.condition(selection,
+                          alt.Color('Genre:N', legend=None,scale=alt.Scale(scheme='category10')),
+                          alt.value('lightgray'),
+                         )
 
     g6 = alt.Chart(genre).mark_point(filled = True, size = 50).encode(
         x = alt.X('Position:Q',axis=alt.Axis(tickCount=3)),
         y = alt.Y('Streams:Q', scale = alt.Scale(type = 'log'),axis=alt.Axis(tickCount=2)),
-        color = alt.Color('Genre', scale=alt.Scale(scheme='category10')),
+        #color = alt.Color('Genre', scale=alt.Scale(scheme='category10')),
+        color = color
         row = 'Ano:N',
         tooltip = 'Artist'
     ).properties(
@@ -485,10 +490,15 @@ if section == "Visualizacion":
                                 subtitleColor = '#3E454F',
                                 anchor = 'middle'
                                 )
-        ).add_selection(
-        multi
+        )
+    
+    legend = alt.Chart(genre).mark_point().encode(
+        y=alt.Y('Genre:N', axis=alt.Axis(orient='right')),
+        color=color
+    ).add_selection(
+        selection
     )
     
-    st.altair_chart(g6, use_container_width=True)
+    st.altair_chart(g6 | legend, use_container_width=True)
 
     st.markdown("<a href='#linkto_top'>Link to top</a>", unsafe_allow_html=True)
