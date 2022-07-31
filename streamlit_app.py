@@ -473,7 +473,7 @@ if section == "Visualizacion":
         x = alt.X('Position:Q',axis=alt.Axis(tickCount=3)),
         y = alt.Y('Streams:Q', scale = alt.Scale(type = 'log'),axis=alt.Axis(tickCount=2)),
         #color = alt.Color('Genre', scale=alt.Scale(scheme='category10')),
-        color = color
+        color = color,
         row = 'Ano:N',
         tooltip = 'Artist'
     ).properties(
